@@ -50,10 +50,10 @@ Mixed nesting:
 
 ## Task Lists
 
-- [x] Completed task
-- [ ] Incomplete task
-- [x] Another completed task
-- [ ] Yet another task to do
+- [ ] Write documentation
+- [x] Create examples
+- [x] Test features
+- [ ] Release plugin
 
 ## Definition Lists
 

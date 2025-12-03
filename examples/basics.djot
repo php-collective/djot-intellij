@@ -34,7 +34,7 @@ You can combine them: *_strong and emphasized_* or _*emphasized and strong*_.
 
 Here's an [inline link](https://djot.net).
 
-Here's a link with a [title](https://djot.net "Djot Homepage").
+Here's a link with a [label](https://djot.net){title="Djot Homepage"}.
 
 And here's a [reference link][djot].
 
