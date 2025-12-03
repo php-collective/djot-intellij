@@ -1,0 +1,37 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Kotlin sources
+*.kt text diff=kotlin
+*.kts text diff=kotlin
+
+# Java sources
+*.java text diff=java
+
+# XML files
+*.xml text
+
+# JSON files
+*.json text
+
+# Properties files
+*.properties text
+
+# Shell scripts
+*.sh text eol=lf
+gradlew text eol=lf
+
+# Windows batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# SVG is text
+*.svg text
