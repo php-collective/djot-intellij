@@ -291,11 +291,4 @@
         </context>
     </template>
 
-    <!-- Symbol -->
-    <template name="djsym" value=":$SYMBOL$:$END$" description="Symbol" toReformat="false" toShortenFQNames="false">
-        <variable name="SYMBOL" expression="" defaultValue="&quot;heart&quot;" alwaysStopAt="true"/>
-        <context>
-            <option name="OTHER" value="true"/>
-        </context>
-    </template>
 </templateSet>

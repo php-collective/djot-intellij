@@ -6,7 +6,10 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 
 - **Syntax highlighting** via TextMate grammar
 - **Live preview** panel (split editor view)
-- **Export to HTML**
+- **IDE theme sync** - preview follows dark/light mode
+- **Code highlighting** - syntax highlighting in code blocks (highlight.js)
+- **Export to HTML** - full Djot rendering via embedded djot.js
+- **Live Templates** - code snippets for common Djot patterns
 - **Tool window** for standalone preview
 - **File type** recognition for `.djot` files
 
@@ -51,9 +54,34 @@ Settings → Plugins → Marketplace → Search "Djot"
 4. Right-click for "Export to HTML" option
 5. Use `Ctrl+Shift+D` to toggle preview tool window
 
+## Live Templates
+
+Type a prefix and press `Tab` to expand. Available templates:
+
+| Prefix | Description |
+|--------|-------------|
+| `djh1`-`djh6` | Headings |
+| `djb`, `dji`, `djc` | Bold, italic, code |
+| `djhi`, `djsup`, `djsub` | Highlight, superscript, subscript |
+| `djins`, `djdel` | Insert, delete |
+| `djlink`, `djlinkref`, `djimg` | Links and images |
+| `djcode`, `djraw` | Code blocks |
+| `djquote`, `djdiv`, `djhr` | Blockquote, div, horizontal rule |
+| `djul`, `djol`, `djtask`, `djdef` | Lists |
+| `djtable` | Table |
+| `djfn`, `djfndef` | Footnotes |
+| `djmath`, `djmathblock` | Math |
+| `djattr`, `djid`, `djspan` | Attributes |
+| `djfront` | YAML frontmatter |
+| `djcomment` | Comment block |
+
 ## Preview Rendering
 
-The preview uses [djot.js](https://github.com/jgm/djot.js) (loaded from CDN) for accurate Djot rendering. Falls back to a basic regex-based conversion if the CDN is unreachable.
+The preview uses [djot.js](https://github.com/jgm/djot.js) (loaded from CDN) for accurate Djot rendering with:
+- Code syntax highlighting (highlight.js)
+- IDE theme synchronization (dark/light)
+- Task list checkboxes
+- Full Djot feature support
 
 ## About Djot
 
