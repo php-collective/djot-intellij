@@ -1,0 +1,23 @@
+{
+  "name": "djot",
+  "displayName": "Djot",
+  "description": "Djot markup language support",
+  "version": "1.0.0",
+  "contributes": {
+    "languages": [
+      {
+        "id": "djot",
+        "aliases": ["Djot", "djot"],
+        "extensions": [".djot"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "djot",
+        "scopeName": "text.djot",
+        "path": "./djot.tmLanguage.json"
+      }
+    ]
+  }
+}
