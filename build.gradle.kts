@@ -11,6 +11,11 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation("org.graalvm.js:js:23.0.2")
+    implementation("org.graalvm.js:js-scriptengine:23.0.2")
+}
+
 intellij {
     version.set("2024.1")
     type.set("PS") // PhpStorm
