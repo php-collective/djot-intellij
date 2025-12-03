@@ -119,8 +119,7 @@ Combined: The {-old{=highlighted=}-} text was {+replaced+}.
 
 This text is visible.
 
-{% This is a comment and will not appear in the output.
-It can span multiple lines. %}
+{% This is a comment and will not appear in the output. %}
 
 This text is also visible.
 
