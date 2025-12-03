@@ -57,15 +57,20 @@ Mixed nesting:
 
 ## Definition Lists
 
-Term 1
-: Definition for term 1
+: Term 1
 
-Term 2
-: Definition for term 2
-: Another definition for term 2
+  Definition for term 1
 
-Complex term
-: This definition can span
+: Term 2
+: Term 2b
+
+  Definition for term 2
+
+  Another paragraph for term 2
+
+: Complex term
+
+  This definition can span
   multiple lines if needed.
 
   It can even contain multiple paragraphs.

@@ -81,7 +81,12 @@ class DjotPreviewPanel(
         val isDark = isDarkTheme()
         ApplicationManager.getApplication().invokeLater {
             browser.cefBrowser.executeJavaScript(
-                "document.body.classList.toggle('dark', $isDark); document.body.classList.toggle('light', ${!isDark});",
+                """
+                document.body.classList.toggle('dark', $isDark);
+                document.body.classList.toggle('light', ${!isDark});
+                document.getElementById('hljs-light').disabled = $isDark;
+                document.getElementById('hljs-dark').disabled = ${!isDark};
+                """.trimIndent(),
                 browser.cefBrowser.url,
                 0
             )
@@ -205,8 +210,9 @@ class DjotPreviewPanel(
         hr { border: none; border-top: 1px solid #ddd; margin: 2em 0; }
         ul, ol { padding-left: 2em; }
         li { margin: 0.25em 0; }
-        .task-list-item { list-style: none; margin-left: -1.5em; }
-        .task-list-item input { margin-right: 0.5em; }
+        li:has(> input[type="checkbox"]) { list-style: none; margin-left: -1.5em; }
+        li > input[type="checkbox"] { margin-right: 0.5em; width: 1em; height: 1em; vertical-align: middle; }
+        li > input[type="checkbox"]:checked { accent-color: #3498db; }
         sup, sub { font-size: 0.75em; }
         dt { font-weight: bold; margin-top: 1em; }
         dd { margin-left: 2em; }
@@ -219,7 +225,14 @@ class DjotPreviewPanel(
         body.dark #error { background: #5a2d2d; color: #f8d7da; }
         body.dark #loading { color: #aaa; }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@djot/djot@0.3.1/dist/djot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@djot/djot@0.3.2/dist/djot.min.js"></script>
+    <link id="hljs-light" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css"${if (isDark) " disabled" else ""}>
+    <link id="hljs-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css"${if (!isDark) " disabled" else ""}>
+    <style>
+        body.light pre code.hljs { background: #f6f8fa; }
+        body.dark pre code.hljs { background: #161b22; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
 </head>
 <body class="$themeClass">
     <div id="error"></div>
@@ -241,11 +254,20 @@ class DjotPreviewPanel(
                 const doc = djot.parse(djotSource);
                 const html = djot.renderHTML(doc);
                 contentEl.innerHTML = html;
+                highlightCode();
             } catch (e) {
                 errorEl.textContent = 'Render error: ' + e.message;
                 errorEl.style.display = 'block';
                 // Try fallback
                 contentEl.innerHTML = fallbackRender(djotSource);
+            }
+        }
+
+        function highlightCode() {
+            if (typeof hljs !== 'undefined') {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
             }
         }
 

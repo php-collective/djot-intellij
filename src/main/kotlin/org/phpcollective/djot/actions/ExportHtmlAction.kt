@@ -58,7 +58,8 @@ class ExportHtmlAction : AnAction() {
     }
 
     private fun convertToHtml(project: Project, djot: String): String {
-        return try {
+        // Try djot-php first
+        try {
             val phpCode = "require_once 'vendor/autoload.php'; " +
                 "\$c = new \\Djot\\DjotConverter(); " +
                 "echo \$c->convert(file_get_contents('php://stdin'));"
@@ -73,23 +74,53 @@ class ExportHtmlAction : AnAction() {
             val result = process.inputStream.bufferedReader().readText()
             val exitCode = process.waitFor()
 
-            if (exitCode == 0) result else fallbackConvert(djot)
-        } catch (e: Exception) {
-            fallbackConvert(djot)
-        }
+            if (exitCode == 0 && result.isNotBlank()) return result
+        } catch (_: Exception) {}
+
+        // Try npx djot (Node.js)
+        try {
+            val process = ProcessBuilder("npx", "djot")
+                .directory(project.basePath?.let { File(it) })
+                .redirectErrorStream(false)
+                .start()
+
+            process.outputStream.bufferedWriter().use { it.write(djot) }
+            process.outputStream.close()
+
+            val result = process.inputStream.bufferedReader().readText()
+            val exitCode = process.waitFor()
+
+            if (exitCode == 0 && result.isNotBlank()) return result
+        } catch (_: Exception) {}
+
+        // Fallback: show warning comment in output
+        return "<!-- WARNING: Export requires djot-php or Node.js djot package for proper rendering.\n" +
+               "     Install: composer require php-collective/djot-php\n" +
+               "     Or: npm install -g @djot/djot -->\n\n" +
+               fallbackConvert(djot)
     }
 
     private fun fallbackConvert(djot: String): String {
-        // Very basic fallback
+        // Basic fallback - headings, emphasis, code only
         return djot
-            .replace(Regex("^# (.+)$", RegexOption.MULTILINE), "<h1>$1</h1>")
-            .replace(Regex("^## (.+)$", RegexOption.MULTILINE), "<h2>$1</h2>")
+            .replace(Regex("^###### (.+)$", RegexOption.MULTILINE), "<h6>$1</h6>")
+            .replace(Regex("^##### (.+)$", RegexOption.MULTILINE), "<h5>$1</h5>")
+            .replace(Regex("^#### (.+)$", RegexOption.MULTILINE), "<h4>$1</h4>")
             .replace(Regex("^### (.+)$", RegexOption.MULTILINE), "<h3>$1</h3>")
+            .replace(Regex("^## (.+)$", RegexOption.MULTILINE), "<h2>$1</h2>")
+            .replace(Regex("^# (.+)$", RegexOption.MULTILINE), "<h1>$1</h1>")
             .replace(Regex("\\*([^*]+)\\*"), "<strong>$1</strong>")
             .replace(Regex("_([^_]+)_"), "<em>$1</em>")
             .replace(Regex("`([^`]+)`"), "<code>$1</code>")
+            .replace(Regex("\\{=([^=]+)=\\}"), "<mark>$1</mark>")
+            .replace(Regex("^---+$", RegexOption.MULTILINE), "<hr>")
+            .replace(Regex("^\\*\\*\\*+$", RegexOption.MULTILINE), "<hr>")
             .replace("\n\n", "</p>\n<p>")
             .let { "<p>$it</p>" }
+            .replace(Regex("<p>(<h[1-6]>)"), "$1")
+            .replace(Regex("(</h[1-6]>)</p>"), "$1")
+            .replace(Regex("<p>(<hr>)</p>"), "$1")
+            .replace("<p></p>", "")
     }
 
     private fun wrapFullHtml(title: String, content: String): String {
