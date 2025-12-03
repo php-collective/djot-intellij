@@ -1,0 +1,91 @@
+# Blockquotes in Djot
+
+## Basic Blockquote
+
+> This is a simple blockquote.
+> It can span multiple lines.
+
+## Multi-paragraph Blockquote
+
+> This is the first paragraph of a blockquote.
+>
+> This is the second paragraph of the same blockquote.
+>
+> And a third paragraph.
+
+## Nested Blockquotes
+
+> This is the outer quote.
+>
+> > This is a nested quote.
+> > It goes deeper.
+>
+> Back to the outer quote.
+
+Triple nesting:
+
+> Level one
+>
+> > Level two
+> >
+> > > Level three
+> >
+> > Back to two
+>
+> Back to one
+
+## Blockquote with Other Elements
+
+> ## Heading inside blockquote
+>
+> A paragraph with *emphasis* and `code`.
+>
+> - List item one
+> - List item two
+>
+> ```python
+> print("Code in a blockquote")
+> ```
+
+## Attributed Blockquotes
+
+{.tip}
+> **Tip:** This is a helpful tip styled with a CSS class.
+
+{.warning}
+> **Warning:** Be careful with this operation.
+
+{.note}
+> **Note:** This is additional information.
+
+## Lazy Blockquotes
+
+> This blockquote uses lazy continuation.
+The > prefix is optional on continuation lines
+as long as they're part of the same paragraph.
+
+> But a blank line ends the blockquote.
+
+This is not part of the blockquote.
+
+## Blockquote with Attribution
+
+> The only way to do great work is to love what you do.
+
+— Steve Jobs
+
+## Complex Nested Example
+
+> Here's a complex blockquote example:
+>
+> > _"Programming is not about what you know;
+> > it's about what you can figure out."_
+> >
+> > — Chris Pine
+>
+> This quote reminds us that problem-solving skills
+> are more important than memorization.
+>
+> 1. Stay curious
+> 2. Keep learning
+> 3. Practice regularly

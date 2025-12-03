@@ -1,0 +1,93 @@
+# Code in Djot
+
+## Inline Code
+
+Use backticks for `inline code`.
+
+You can use multiple backticks for code containing backticks: `` `code` ``.
+
+## Code Blocks
+
+Fenced code blocks use three or more backticks:
+
+```
+This is a code block.
+No syntax highlighting.
+```
+
+### With Language Specification
+
+```javascript
+function greet(name) {
+    console.log(`Hello, ${name}!`);
+}
+
+greet('World');
+```
+
+```python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+for i in range(10):
+    print(fibonacci(i))
+```
+
+```kotlin
+fun main() {
+    val greeting = "Hello, Djot!"
+    println(greeting)
+}
+```
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Djot Example</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+</body>
+</html>
+```
+
+```css
+.djot-preview {
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+```
+
+```sql
+SELECT users.name, COUNT(orders.id) AS order_count
+FROM users
+LEFT JOIN orders ON users.id = orders.user_id
+GROUP BY users.id
+ORDER BY order_count DESC;
+```
+
+## Raw Blocks
+
+Raw blocks pass content through without processing, with a format specifier:
+
+```=html
+<div class="custom-html">
+    <p>This is <strong>raw HTML</strong> content.</p>
+</div>
+```
+
+```=latex
+\begin{equation}
+E = mc^2
+\end{equation}
+```
+
+## Indented Code (Not Recommended)
+
+    This is indented code.
+    Four spaces at the start.
+    Still part of the code block.

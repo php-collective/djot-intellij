@@ -1,0 +1,144 @@
+---
+title: Complete Djot Document Example
+author: PHP Collective
+date: 2024
+---
+
+# Complete Djot Document
+
+This document demonstrates a full-featured Djot document with frontmatter
+and various elements working together.
+
+## Introduction
+
+[Djot](https://djot.net) is a light markup syntax created by John MacFarlane,
+the creator of [Pandoc](https://pandoc.org). It aims to be a better, more
+consistent alternative to Markdown.
+
+{.highlight}
+> Djot's syntax is designed to be unambiguous, making it easier to parse
+> and produce consistent output across different implementations.
+
+## Features Overview
+
+| Category    | Examples                          |
+|:------------|:----------------------------------|
+| Inline      | _emphasis_, *strong*, `code`      |
+| Blocks      | paragraphs, lists, code blocks    |
+| Structure   | headings, divs, blockquotes       |
+| Special     | math, footnotes, attributes       |
+
+## Getting Started
+
+### Installation
+
+To use Djot in your JetBrains IDE:
+
+1. Open **Settings** (Ctrl+Alt+S)
+2. Navigate to **Plugins** → **Marketplace**
+3. Search for "Djot"
+4. Click **Install**
+5. Restart the IDE
+
+### Creating Your First Document
+
+Create a new file with the `.djot` extension:
+
+```djot
+# My First Djot Document
+
+Hello, *Djot*!
+```
+
+## Syntax Comparison
+
+Here's how Djot differs from Markdown:
+
+::: comparison
+| Feature      | Markdown      | Djot           |
+|:-------------|:--------------|:---------------|
+| Strong       | `**text**`    | `*text*`       |
+| Emphasis     | `*text*`      | `_text_`       |
+| Highlight    | N/A           | `{=text=}`     |
+| Attributes   | Limited       | `{.class #id}` |
+:::
+
+## Code Examples
+
+### JavaScript
+
+```javascript
+// Djot parser example
+import { parse, renderHTML } from '@djot/djot';
+
+const djotSource = `
+# Hello World
+
+This is *Djot* markup.
+`;
+
+const ast = parse(djotSource);
+const html = renderHTML(ast);
+console.log(html);
+```
+
+### Mathematical Notation
+
+Djot has native support for math. The quadratic formula[^quadratic]:
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+Inline math works too: $`a^2 + b^2 = c^2`
+
+[^quadratic]: Used to find the roots of quadratic equations of the form
+    $`ax^2 + bx + c = 0`
+
+## Advanced Usage
+
+### Custom Styling with Attributes
+
+{.important #key-point}
+This paragraph has both a class and an ID applied.
+
+You can also style [individual phrases]{.highlight} within a paragraph.
+
+### Task Tracking
+
+- [x] Learn Djot basics
+- [x] Install IDE plugin
+- [ ] Convert existing Markdown files
+- [ ] Write documentation in Djot
+
+### Chemical Formulas
+
+Using subscript: H{~2~}O, CO{~2~}, C{~6~}H{~12~}O{~6~}
+
+Using superscript: {^14^}C, {^238^}U
+
+## Resources
+
+::: {.resources}
+### Official Links
+
+- [Djot Homepage](https://djot.net)
+- [Djot Playground](https://djot.net/playground/)
+- [GitHub Repository](https://github.com/jgm/djot)
+
+### Related Projects
+
+- [Pandoc](https://pandoc.org) --- Universal document converter
+- [CommonMark](https://commonmark.org) --- Markdown specification
+:::
+
+## Conclusion
+
+Djot provides a {=cleaner=} and more {=consistent=} markup language
+compared to traditional Markdown. Its unambiguous syntax makes it ideal
+for technical documentation, note-taking, and any situation where you need
+reliable parsing and rendering.
+
+---
+
+_Last updated: 2024_

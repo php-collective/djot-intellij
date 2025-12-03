@@ -1,0 +1,65 @@
+# Djot Basics
+
+This is a simple example of Djot markup language.
+
+## Paragraphs
+
+This is a paragraph of text. Djot uses blank lines to separate paragraphs,
+just like Markdown.
+
+This is another paragraph. You can have multiple sentences in a single
+paragraph. Line breaks within a paragraph are treated as soft breaks.
+
+To force a hard line break,\
+end the line with a backslash.
+
+## Headings
+
+Djot supports six levels of headings:
+
+# Heading Level 1
+## Heading Level 2
+### Heading Level 3
+#### Heading Level 4
+##### Heading Level 5
+###### Heading Level 6
+
+## Emphasis and Strong
+
+Djot uses _underscores_ for emphasis (italics) and *asterisks* for strong (bold).
+
+You can combine them: *_strong and emphasized_* or _*emphasized and strong*_.
+
+## Links
+
+Here's an [inline link](https://djot.net).
+
+Here's a link with a [title](https://djot.net "Djot Homepage").
+
+And here's a [reference link][djot].
+
+[djot]: https://djot.net
+
+## Images
+
+![A placeholder image](https://via.placeholder.com/150)
+
+Images can also use reference syntax:
+
+![Alt text][placeholder]
+
+[placeholder]: https://via.placeholder.com/200
+
+## Horizontal Rules
+
+You can create a horizontal rule with three or more dashes:
+
+---
+
+Or with asterisks:
+
+***
+
+## Escaping
+
+Use backslash to escape special characters: \*not bold\*, \_not italic\_.

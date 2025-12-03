@@ -1,0 +1,156 @@
+# Advanced Djot Features
+
+## Block Attributes
+
+Add attributes to any block element:
+
+{.warning}
+> This is a warning blockquote with a CSS class.
+
+{#important-section}
+## This heading has an ID
+
+{.highlight .important}
+This paragraph has multiple classes.
+
+## Inline Attributes
+
+This is [text with attributes]{.highlight #special-span}.
+
+You can style [individual words]{style="color: red"} inline.
+
+## Spans
+
+Use square brackets for [inline spans]{.custom-class}.
+
+Spans can have [multiple]{.one .two} [attributes]{#myid title="My Title"}.
+
+## Divs
+
+Divs use three or more colons:
+
+::: warning
+This is a warning div.
+
+It can contain multiple paragraphs and other block elements.
+
+- Even lists
+- Work inside divs
+:::
+
+Nested divs:
+
+:::: outer
+This is the outer div.
+
+::: inner
+This is a nested inner div.
+:::
+
+Back to outer div.
+::::
+
+Named divs with attributes:
+
+::: {.note #my-note}
+A note with both a class and an ID.
+:::
+
+## Footnotes
+
+Here's a sentence with a footnote.[^1]
+
+Another sentence with a different footnote.[^longnote]
+
+[^1]: This is the first footnote.
+
+[^longnote]: This is a longer footnote with multiple paragraphs.
+
+    Indent subsequent paragraphs to include them in the footnote.
+
+    You can even include code:
+
+    ```
+    code in footnote
+    ```
+
+## Math
+
+Inline math: $`E = mc^2`
+
+Display math:
+
+$$
+\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+$$
+
+Another display equation:
+
+$$
+\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
+$$
+
+## Superscript and Subscript
+
+Water is H{~2~}O.
+
+The 2{^nd^} element.
+
+E = mc{^2^}
+
+## Highlighting, Insertions, and Deletions
+
+This is {=highlighted text=}.
+
+This was {+inserted+} into the document.
+
+This was {-deleted-} from the document.
+
+Combined: The {-old{=highlighted=}-} text was {+replaced+}.
+
+## Symbols
+
+Use colons for symbols: :heart: :star: :warning:
+
+## Smart Punctuation
+
+- Em dash --- like this
+- En dash -- for ranges
+- Ellipsis ... for trailing off
+- "Smart quotes" and 'single quotes'
+
+## Line Blocks
+
+Line blocks preserve line breaks:
+
+| The quick brown fox
+| jumps over
+| the lazy dog.
+
+| Roses are red,
+|   Violets are blue,
+| Sugar is sweet,
+|   And so are you.
+
+## Comments
+
+This text is visible.
+
+{% comment %}
+This text is a comment and will not appear in the output.
+It can span multiple lines.
+{% endcomment %}
+
+This text is also visible.
+
+## Raw Inline Content
+
+Here's some raw HTML: `<strong>bold</strong>`{=html}
+
+Or raw LaTeX: `\textbf{bold}`{=latex}
+
+## Autolinks
+
+Simple URLs become links automatically: <https://djot.net>
+
+Email links: <info@example.com>

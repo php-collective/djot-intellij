@@ -1,0 +1,58 @@
+# Tables in Djot
+
+## Basic Table
+
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Cell 1   | Cell 2   | Cell 3   |
+| Cell 4   | Cell 5   | Cell 6   |
+
+## Column Alignment
+
+Use colons in the separator row to specify alignment:
+
+| Left     | Center   | Right    |
+|:---------|:--------:|---------:|
+| Left     | Center   | Right    |
+| aligned  | aligned  | aligned  |
+| text     | text     | text     |
+
+## Different Column Widths
+
+| Short | Much longer column header | Med    |
+|-------|---------------------------|--------|
+| a     | This cell has more text   | middle |
+| b     | Short                     | med    |
+
+## Table with Code
+
+| Language   | Hello World                    |
+|------------|--------------------------------|
+| Python     | `print("Hello, World!")`       |
+| JavaScript | `console.log("Hello, World!")` |
+| Kotlin     | `println("Hello, World!")`     |
+
+## Table with Links
+
+| Resource | URL                           |
+|----------|-------------------------------|
+| Djot     | [djot.net](https://djot.net)  |
+| GitHub   | [github.com](https://github.com) |
+
+## Empty Cells
+
+| A   | B   | C   |
+|-----|-----|-----|
+| 1   |     | 3   |
+|     | 2   |     |
+| 1   | 2   | 3   |
+
+## Complex Table
+
+| Feature        | Markdown | Djot | Notes                    |
+|:---------------|:--------:|:----:|:-------------------------|
+| Emphasis       | ✓        | ✓    | Syntax differs           |
+| Tables         | ✓        | ✓    | Similar syntax           |
+| Math           | ~        | ✓    | Native in Djot           |
+| Attributes     | ~        | ✓    | Built-in support         |
+| Unambiguous    | ✗        | ✓    | Major Djot advantage     |

@@ -1,0 +1,85 @@
+# Lists in Djot
+
+## Unordered Lists
+
+- Item one
+- Item two
+- Item three
+
+Or using asterisks:
+
+* First item
+* Second item
+* Third item
+
+## Ordered Lists
+
+1. First item
+2. Second item
+3. Third item
+
+The numbers don't need to be sequential:
+
+1. First
+1. Second (still numbered 2)
+1. Third (still numbered 3)
+
+## Nested Lists
+
+- Level one
+  - Level two
+    - Level three
+  - Back to level two
+- Back to level one
+
+Nested ordered lists:
+
+1. First item
+   1. Nested item one
+   2. Nested item two
+2. Second item
+
+Mixed nesting:
+
+1. Ordered item
+   - Unordered nested
+   - Another unordered
+2. Another ordered
+   1. Nested ordered
+   2. Another nested ordered
+
+## Task Lists
+
+- [x] Completed task
+- [ ] Incomplete task
+- [x] Another completed task
+- [ ] Yet another task to do
+
+## Definition Lists
+
+Term 1
+: Definition for term 1
+
+Term 2
+: Definition for term 2
+: Another definition for term 2
+
+Complex term
+: This definition can span
+  multiple lines if needed.
+
+  It can even contain multiple paragraphs.
+
+## Lists with Multiple Paragraphs
+
+- First item with multiple paragraphs.
+
+  This is the second paragraph of the first item.
+
+- Second item.
+
+1. Ordered item with multiple paragraphs.
+
+   Here's another paragraph in this item.
+
+2. Second ordered item.
