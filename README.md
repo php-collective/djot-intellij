@@ -14,7 +14,6 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 
 - JetBrains IDE 2024.3+
 - Java 17+
-- For full preview: PHP with [djot-php](https://github.com/php-collective/djot-php) installed
 
 ## Building
 
@@ -30,9 +29,19 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 
 ## Installation
 
-1. Build the plugin: `./gradlew buildPlugin`
-2. Install from disk: Settings → Plugins → ⚙️ → Install Plugin from Disk
-3. Select `build/distributions/djot-intellij-*.zip`
+### From JetBrains Marketplace (coming soon)
+
+Settings → Plugins → Marketplace → Search "Djot"
+
+### From Disk (manual)
+
+1. Download the latest release from [GitHub Releases](https://github.com/php-collective/djot-intellij/releases), or build it yourself:
+   ```bash
+   ./gradlew buildPlugin
+   ```
+2. In your IDE: Settings → Plugins → ⚙️ → Install Plugin from Disk
+3. Select the `djot-intellij-*.zip` file (in `build/distributions/` if built locally)
+4. Restart the IDE
 
 ## Usage
 
@@ -44,13 +53,7 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 
 ## Preview Rendering
 
-The preview uses djot-php when available in the project. Fallback to basic regex-based conversion if PHP is not available.
-
-For best results, add djot-php to your project:
-
-```bash
-composer require php-collective/djot-php
-```
+The preview uses [djot.js](https://github.com/jgm/djot.js) (loaded from CDN) for accurate Djot rendering. Falls back to a basic regex-based conversion if the CDN is unreachable.
 
 ## About Djot
 
