@@ -1,5 +1,8 @@
 # Djot IntelliJ Plugin
 
+[![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/XXXXX-djot.svg)](https://plugins.jetbrains.com/plugin/XXXXX-djot)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/XXXXX-djot.svg)](https://plugins.jetbrains.com/plugin/XXXXX-djot)
+
 Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebStorm, etc.).
 
 ## Features
@@ -29,9 +32,13 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 
 ## Installation
 
-### From JetBrains Marketplace (coming soon)
+### From JetBrains Marketplace
 
-Settings → Plugins → Marketplace → Search "Djot"
+1. In your IDE: **Settings → Plugins → Marketplace**
+2. Search for **"Djot"**
+3. Click **Install**
+
+Or install directly: [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/XXXXX-djot)
 
 ### From Disk (manual)
 
