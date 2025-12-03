@@ -29,4 +29,8 @@ tasks {
     buildSearchableOptions {
         enabled = false
     }
+
+    publishPlugin {
+        token.set(System.getenv("PUBLISH_TOKEN"))
+    }
 }
