@@ -2,12 +2,16 @@ package org.phpcollective.djot.preview
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.colors.EditorColorsListener
+import com.intellij.openapi.editor.colors.EditorColorsManager
+import com.intellij.openapi.editor.colors.EditorColorsScheme
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JBCefBrowser
+import com.intellij.util.messages.MessageBusConnection
 import java.awt.BorderLayout
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JComponent
@@ -24,6 +28,7 @@ class DjotPreviewPanel(
     private val updatePending = AtomicBoolean(false)
     private val updateTimer: Timer
     private var initialized = false
+    private val messageBusConnection: MessageBusConnection
 
     private val documentListener = object : DocumentListener {
         override fun documentChanged(event: DocumentEvent) {
@@ -46,23 +51,50 @@ class DjotPreviewPanel(
         val document = FileDocumentManager.getInstance().getDocument(file)
         document?.addDocumentListener(documentListener, this)
 
+        // Listen for theme changes
+        messageBusConnection = ApplicationManager.getApplication().messageBus.connect(this)
+        messageBusConnection.subscribe(EditorColorsManager.TOPIC, EditorColorsListener {
+            updateTheme()
+        })
+
         // Initial render - load the HTML shell with djot.js
         loadPreviewShell()
     }
 
     val component: JComponent get() = panel
 
+    private fun isDarkTheme(): Boolean {
+        val scheme = EditorColorsManager.getInstance().globalScheme
+        val background = scheme.defaultBackground
+        // Calculate luminance to determine if dark
+        val luminance = (0.299 * background.red + 0.587 * background.green + 0.114 * background.blue) / 255
+        return luminance < 0.5
+    }
+
     private fun scheduleUpdate() {
         updatePending.set(true)
         updateTimer.restart()
+    }
+
+    private fun updateTheme() {
+        if (!initialized) return
+        val isDark = isDarkTheme()
+        ApplicationManager.getApplication().invokeLater {
+            browser.cefBrowser.executeJavaScript(
+                "document.body.classList.toggle('dark', $isDark); document.body.classList.toggle('light', ${!isDark});",
+                browser.cefBrowser.url,
+                0
+            )
+        }
     }
 
     private fun loadPreviewShell() {
         val document = FileDocumentManager.getInstance().getDocument(file)
         val content = document?.text ?: ""
         val escapedContent = escapeForJs(content)
+        val isDark = isDarkTheme()
 
-        browser.loadHTML(createPreviewHtml(escapedContent))
+        browser.loadHTML(createPreviewHtml(escapedContent, isDark))
         initialized = true
     }
 
@@ -97,7 +129,8 @@ class DjotPreviewPanel(
             .replace("\r", "\n")
     }
 
-    private fun createPreviewHtml(initialContent: String): String {
+    private fun createPreviewHtml(initialContent: String, isDark: Boolean): String {
+        val themeClass = if (isDark) "dark" else "light"
         return """
 <!DOCTYPE html>
 <html>
@@ -114,15 +147,20 @@ class DjotPreviewPanel(
             color: #333;
             background: #fff;
         }
-        @media (prefers-color-scheme: dark) {
-            body { background: #1e1e1e; color: #d4d4d4; }
-            a { color: #6db3f2; }
-            code, pre { background: #2d2d2d; }
-            blockquote { border-color: #444; color: #aaa; }
-            table, th, td { border-color: #444; }
-            th { background: #2d2d2d; }
-            hr { border-color: #444; }
+        body.dark {
+            background: #1e1e1e;
+            color: #d4d4d4;
         }
+        body.dark a { color: #6db3f2; }
+        body.dark code, body.dark pre { background: #2d2d2d; }
+        body.dark blockquote { border-color: #444; color: #aaa; }
+        body.dark table, body.dark th, body.dark td { border-color: #444; }
+        body.dark th { background: #2d2d2d; }
+        body.dark hr { border-color: #444; }
+        body.dark h1 { color: #e0e0e0; border-bottom-color: #6db3f2; }
+        body.dark h2 { color: #c0c0c0; border-bottom-color: #444; }
+        body.dark h3, body.dark h4, body.dark h5, body.dark h6 { color: #a0a0a0; }
+        body.dark mark { background: #5a5000; color: #fff; }
         h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; }
         h2 { color: #34495e; border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
         h3, h4, h5, h6 { color: #7f8c8d; }
@@ -178,10 +216,12 @@ class DjotPreviewPanel(
         #content { min-height: 100px; }
         #error { color: #dc3545; background: #f8d7da; padding: 10px; border-radius: 5px; display: none; }
         #loading { color: #666; font-style: italic; }
+        body.dark #error { background: #5a2d2d; color: #f8d7da; }
+        body.dark #loading { color: #aaa; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@djot/djot@0.3.1/dist/djot.min.js"></script>
 </head>
-<body>
+<body class="$themeClass">
     <div id="error"></div>
     <div id="content"><div id="loading">Loading...</div></div>
     <script>
