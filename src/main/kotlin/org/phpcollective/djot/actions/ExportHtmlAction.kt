@@ -59,11 +59,10 @@ class ExportHtmlAction : AnAction() {
 
     private fun convertToHtml(project: Project, djot: String): String {
         return try {
-            val process = ProcessBuilder("php", "-r", """
-                require_once 'vendor/autoload.php';
-                \$converter = new \Djot\DjotConverter();
-                echo \$converter->convert(file_get_contents('php://stdin'));
-            """.trimIndent())
+            val phpCode = "require_once 'vendor/autoload.php'; " +
+                "\$c = new \\Djot\\DjotConverter(); " +
+                "echo \$c->convert(file_get_contents('php://stdin'));"
+            val process = ProcessBuilder("php", "-r", phpCode)
                 .directory(project.basePath?.let { File(it) })
                 .redirectErrorStream(true)
                 .start()

@@ -4,6 +4,8 @@ import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Key
+import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
 import org.phpcollective.djot.DjotFileType
 
@@ -31,6 +33,7 @@ class DjotPreviewFileEditor(
 ) : FileEditor {
 
     private val previewPanel = DjotPreviewPanel(project, file)
+    private val userData = UserDataHolderBase()
 
     override fun getComponent() = previewPanel.component
 
@@ -53,4 +56,8 @@ class DjotPreviewFileEditor(
     }
 
     override fun getFile(): VirtualFile = file
+
+    override fun <T : Any?> getUserData(key: Key<T>): T? = userData.getUserData(key)
+
+    override fun <T : Any?> putUserData(key: Key<T>, value: T?) = userData.putUserData(key, value)
 }

@@ -12,7 +12,7 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 
 ## Requirements
 
-- JetBrains IDE 2024.3+
+- JetBrains IDE 2024.1+
 - Java 17+
 
 ## Building
@@ -69,6 +69,6 @@ MIT
 
 ## Links
 
-- [djot-php](https://github.com/php-collective/djot-php) - PHP implementation
 - [Djot specification](https://htmlpreview.github.io/?https://github.com/jgm/djot/blob/master/doc/syntax.html)
 - [djot.net](https://djot.net) - Official site
+- [djot-php](https://github.com/php-collective/djot-php) - PHP implementation

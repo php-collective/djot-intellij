@@ -23,7 +23,6 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.textmate</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- File type registration -->
@@ -34,14 +33,6 @@
                 language="Djot"
                 extensions="djot"/>
 
-        <!-- Language registration -->
-        <lang.parserDefinition
-                language="Djot"
-                implementationClass="org.phpcollective.djot.DjotParserDefinition"/>
-
-        <!-- TextMate bundle for syntax highlighting -->
-        <textmate.bundleProvider
-                implementation="org.phpcollective.djot.DjotTextMateBundleProvider"/>
 
         <!-- Preview editor -->
         <fileEditorProvider
