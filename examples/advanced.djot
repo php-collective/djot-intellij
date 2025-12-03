@@ -119,19 +119,6 @@ Use colons for symbols: :heart: :star: :warning:
 - Ellipsis ... for trailing off
 - "Smart quotes" and 'single quotes'
 
-## Line Blocks
-
-Line blocks preserve line breaks:
-
-| The quick brown fox
-| jumps over
-| the lazy dog.
-
-| Roses are red,
-|   Violets are blue,
-| Sugar is sweet,
-|   And so are you.
-
 ## Comments
 
 This text is visible.

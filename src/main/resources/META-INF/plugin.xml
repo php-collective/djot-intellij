@@ -12,6 +12,7 @@
         <li>Live preview panel</li>
         <li>Export to HTML</li>
         <li>File type recognition (.djot)</li>
+        <li>Live templates for quick element insertion (type <code>dj</code> + Tab to see all)</li>
     </ul>
 
     <h3>About Djot</h3>
@@ -44,6 +45,9 @@
                 anchor="right"
                 factoryClass="org.phpcollective.djot.preview.DjotPreviewToolWindowFactory"
                 icon="/icons/djot.svg"/>
+
+        <!-- Live templates for Djot -->
+        <defaultLiveTemplates file="/liveTemplates/Djot.xml"/>
     </extensions>
 
     <actions>

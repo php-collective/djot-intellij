@@ -1,0 +1,301 @@
+<templateSet group="Djot">
+    <!-- Headings -->
+    <template name="djh1" value="# $TEXT$&#10;$END$" description="Heading level 1" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="" defaultValue="&quot;Heading&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djh2" value="## $TEXT$&#10;$END$" description="Heading level 2" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="" defaultValue="&quot;Heading&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djh3" value="### $TEXT$&#10;$END$" description="Heading level 3" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="" defaultValue="&quot;Heading&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djh4" value="#### $TEXT$&#10;$END$" description="Heading level 4" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="" defaultValue="&quot;Heading&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djh5" value="##### $TEXT$&#10;$END$" description="Heading level 5" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="" defaultValue="&quot;Heading&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djh6" value="###### $TEXT$&#10;$END$" description="Heading level 6" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="" defaultValue="&quot;Heading&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Inline formatting -->
+    <template name="djb" value="*$TEXT$*$END$" description="Bold text" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;bold&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="dji" value="_$TEXT$_$END$" description="Italic text" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;italic&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djc" value="`$TEXT$`$END$" description="Inline code" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;code&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djhi" value="{=$TEXT$=}$END$" description="Highlighted text" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;highlighted&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djsup" value="{^$TEXT$^}$END$" description="Superscript" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;superscript&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djsub" value="{~$TEXT$~}$END$" description="Subscript" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;subscript&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djins" value="{+$TEXT$+}$END$" description="Inserted text" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;inserted&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djdel" value="{-$TEXT$-}$END$" description="Deleted text" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;deleted&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Links and images -->
+    <template name="djlink" value="[$TEXT$]($URL$)$END$" description="Link" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;link text&quot;" alwaysStopAt="true"/>
+        <variable name="URL" expression="" defaultValue="&quot;https://&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djlinkref" value="[$TEXT$][$REF$]$END$" description="Reference link" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;link text&quot;" alwaysStopAt="true"/>
+        <variable name="REF" expression="" defaultValue="&quot;ref&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djimg" value="![$ALT$]($URL$)$END$" description="Image" toReformat="false" toShortenFQNames="false">
+        <variable name="ALT" expression="" defaultValue="&quot;alt text&quot;" alwaysStopAt="true"/>
+        <variable name="URL" expression="" defaultValue="&quot;image.png&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djauto" value="&lt;$URL$&gt;$END$" description="Autolink" toReformat="false" toShortenFQNames="false">
+        <variable name="URL" expression="" defaultValue="&quot;https://&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Code blocks -->
+    <template name="djcode" value="``` $LANG$&#10;$CODE$&#10;```&#10;$END$" description="Code block" toReformat="false" toShortenFQNames="false">
+        <variable name="LANG" expression="" defaultValue="&quot;&quot;" alwaysStopAt="true"/>
+        <variable name="CODE" expression="selection()" defaultValue="&quot;&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djraw" value="``` =$FORMAT$&#10;$CONTENT$&#10;```&#10;$END$" description="Raw block (HTML, LaTeX, etc.)" toReformat="false" toShortenFQNames="false">
+        <variable name="FORMAT" expression="" defaultValue="&quot;html&quot;" alwaysStopAt="true"/>
+        <variable name="CONTENT" expression="selection()" defaultValue="&quot;&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Block elements -->
+    <template name="djquote" value="&gt; $TEXT$&#10;$END$" description="Blockquote" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;quote&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djdiv" value=":::$CLASS$&#10;$CONTENT$&#10;:::&#10;$END$" description="Div with class" toReformat="false" toShortenFQNames="false">
+        <variable name="CLASS" expression="" defaultValue="&quot;warning&quot;" alwaysStopAt="true"/>
+        <variable name="CONTENT" expression="selection()" defaultValue="&quot;&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djhr" value="---&#10;$END$" description="Horizontal rule" toReformat="false" toShortenFQNames="false">
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Lists -->
+    <template name="djul" value="- $ITEM1$&#10;- $ITEM2$&#10;- $ITEM3$&#10;$END$" description="Unordered list" toReformat="false" toShortenFQNames="false">
+        <variable name="ITEM1" expression="" defaultValue="&quot;Item 1&quot;" alwaysStopAt="true"/>
+        <variable name="ITEM2" expression="" defaultValue="&quot;Item 2&quot;" alwaysStopAt="true"/>
+        <variable name="ITEM3" expression="" defaultValue="&quot;Item 3&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djol" value="1. $ITEM1$&#10;2. $ITEM2$&#10;3. $ITEM3$&#10;$END$" description="Ordered list" toReformat="false" toShortenFQNames="false">
+        <variable name="ITEM1" expression="" defaultValue="&quot;Item 1&quot;" alwaysStopAt="true"/>
+        <variable name="ITEM2" expression="" defaultValue="&quot;Item 2&quot;" alwaysStopAt="true"/>
+        <variable name="ITEM3" expression="" defaultValue="&quot;Item 3&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djtask" value="- [ ] $ITEM1$&#10;- [ ] $ITEM2$&#10;- [ ] $ITEM3$&#10;$END$" description="Task list" toReformat="false" toShortenFQNames="false">
+        <variable name="ITEM1" expression="" defaultValue="&quot;Task 1&quot;" alwaysStopAt="true"/>
+        <variable name="ITEM2" expression="" defaultValue="&quot;Task 2&quot;" alwaysStopAt="true"/>
+        <variable name="ITEM3" expression="" defaultValue="&quot;Task 3&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djdef" value=": $TERM$&#10;&#10;  $DEFINITION$&#10;$END$" description="Definition list item" toReformat="false" toShortenFQNames="false">
+        <variable name="TERM" expression="" defaultValue="&quot;Term&quot;" alwaysStopAt="true"/>
+        <variable name="DEFINITION" expression="" defaultValue="&quot;Definition&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Table -->
+    <template name="djtable" value="| $H1$ | $H2$ | $H3$ |&#10;|---|---|---|&#10;| $C1$ | $C2$ | $C3$ |&#10;$END$" description="Table" toReformat="false" toShortenFQNames="false">
+        <variable name="H1" expression="" defaultValue="&quot;Header 1&quot;" alwaysStopAt="true"/>
+        <variable name="H2" expression="" defaultValue="&quot;Header 2&quot;" alwaysStopAt="true"/>
+        <variable name="H3" expression="" defaultValue="&quot;Header 3&quot;" alwaysStopAt="true"/>
+        <variable name="C1" expression="" defaultValue="&quot;Cell 1&quot;" alwaysStopAt="true"/>
+        <variable name="C2" expression="" defaultValue="&quot;Cell 2&quot;" alwaysStopAt="true"/>
+        <variable name="C3" expression="" defaultValue="&quot;Cell 3&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Footnote -->
+    <template name="djfn" value="[^$NAME$]$END$" description="Footnote reference" toReformat="false" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="&quot;1&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djfndef" value="[^$NAME$]: $TEXT$&#10;$END$" description="Footnote definition" toReformat="false" toShortenFQNames="false">
+        <variable name="NAME" expression="" defaultValue="&quot;1&quot;" alwaysStopAt="true"/>
+        <variable name="TEXT" expression="" defaultValue="&quot;Footnote text&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Math -->
+    <template name="djmath" value="$`$FORMULA$`$END$" description="Inline math" toReformat="false" toShortenFQNames="false">
+        <variable name="FORMULA" expression="selection()" defaultValue="&quot;x^2&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djmathblock" value="$$&#10;$FORMULA$&#10;$$&#10;$END$" description="Display math block" toReformat="false" toShortenFQNames="false">
+        <variable name="FORMULA" expression="selection()" defaultValue="&quot;x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Attributes -->
+    <template name="djattr" value="{.$CLASS$}$END$" description="Class attribute" toReformat="false" toShortenFQNames="false">
+        <variable name="CLASS" expression="" defaultValue="&quot;classname&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djid" value="{#$ID$}$END$" description="ID attribute" toReformat="false" toShortenFQNames="false">
+        <variable name="ID" expression="" defaultValue="&quot;my-id&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <template name="djspan" value="[$TEXT$]{.$CLASS$}$END$" description="Span with class" toReformat="false" toShortenFQNames="false">
+        <variable name="TEXT" expression="selection()" defaultValue="&quot;text&quot;" alwaysStopAt="true"/>
+        <variable name="CLASS" expression="" defaultValue="&quot;classname&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Frontmatter -->
+    <template name="djfront" value="---&#10;title: $TITLE$&#10;author: $AUTHOR$&#10;date: $DATE$&#10;---&#10;$END$" description="YAML frontmatter" toReformat="false" toShortenFQNames="false">
+        <variable name="TITLE" expression="" defaultValue="&quot;Document Title&quot;" alwaysStopAt="true"/>
+        <variable name="AUTHOR" expression="" defaultValue="&quot;Author Name&quot;" alwaysStopAt="true"/>
+        <variable name="DATE" expression="date(&quot;yyyy-MM-dd&quot;)" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Comment -->
+    <template name="djcomment" value="{%&#10;$COMMENT$&#10;%}&#10;$END$" description="Comment block" toReformat="false" toShortenFQNames="false">
+        <variable name="COMMENT" expression="selection()" defaultValue="&quot;Comment text&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+
+    <!-- Symbol -->
+    <template name="djsym" value=":$SYMBOL$:$END$" description="Symbol" toReformat="false" toShortenFQNames="false">
+        <variable name="SYMBOL" expression="" defaultValue="&quot;heart&quot;" alwaysStopAt="true"/>
+        <context>
+            <option name="OTHER" value="true"/>
+        </context>
+    </template>
+</templateSet>
