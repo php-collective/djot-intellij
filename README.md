@@ -58,22 +58,22 @@ Settings → Plugins → Marketplace → Search "Djot"
 
 Type a prefix and press `Tab` to expand. Available templates:
 
-| Prefix | Description |
-|--------|-------------|
-| `djh1`-`djh6` | Headings |
-| `djb`, `dji`, `djc` | Bold, italic, code |
-| `djhi`, `djsup`, `djsub` | Highlight, superscript, subscript |
-| `djins`, `djdel` | Insert, delete |
-| `djlink`, `djlinkref`, `djimg` | Links and images |
-| `djcode`, `djraw` | Code blocks |
-| `djquote`, `djdiv`, `djhr` | Blockquote, div, horizontal rule |
-| `djul`, `djol`, `djtask`, `djdef` | Lists |
-| `djtable` | Table |
-| `djfn`, `djfndef` | Footnotes |
-| `djmath`, `djmathblock` | Math |
-| `djattr`, `djid`, `djspan` | Attributes |
-| `djfront` | YAML frontmatter |
-| `djcomment` | Comment block |
+| Prefix                            | Description                       |
+|-----------------------------------|-----------------------------------|
+| `djh1`-`djh6`                     | Headings                          |
+| `djb`, `dji`, `djc`               | Bold, italic, code                |
+| `djhi`, `djsup`, `djsub`          | Highlight, superscript, subscript |
+| `djins`, `djdel`                  | Insert, delete                    |
+| `djlink`, `djlinkref`, `djimg`    | Links and images                  |
+| `djcode`, `djraw`                 | Code blocks                       |
+| `djquote`, `djdiv`, `djhr`        | Blockquote, div, horizontal rule  |
+| `djul`, `djol`, `djtask`, `djdef` | Lists                             |
+| `djtable`                         | Table                             |
+| `djfn`, `djfndef`                 | Footnotes                         |
+| `djmath`, `djmathblock`           | Math                              |
+| `djattr`, `djid`, `djspan`        | Attributes                        |
+| `djfront`                         | YAML frontmatter                  |
+| `djcomment`                       | Comment block                     |
 
 ## Preview Rendering
 
