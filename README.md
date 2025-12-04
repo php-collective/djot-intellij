@@ -21,18 +21,6 @@ Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebSto
 - JetBrains IDE 2024.1+
 - Java 17+
 
-## Building
-
-```bash
-./gradlew build
-```
-
-## Running (development)
-
-```bash
-./gradlew runIde
-```
-
 ## Installation
 
 ### From JetBrains Marketplace
@@ -98,12 +86,22 @@ The preview uses [djot.js](https://github.com/jgm/djot.js) (loaded from CDN) for
 - Better syntax for highlights, super/subscript, attributes
 - No backtracking required during parsing
 
-## License
-
-MIT
-
 ## Links
 
 - [Djot specification](https://htmlpreview.github.io/?https://github.com/jgm/djot/blob/master/doc/syntax.html)
 - [djot.net](https://djot.net) - Official site
 - [djot-php](https://github.com/php-collective/djot-php) - PHP implementation
+
+## Development
+
+### Building
+
+```bash
+./gradlew build
+```
+
+### Running (development)
+
+```bash
+./gradlew runIde
+```
