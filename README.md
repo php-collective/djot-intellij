@@ -5,6 +5,8 @@
 
 Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebStorm, etc.).
 
+[![Watch the demo video](https://img.youtube.com/vi/E6K9snep79o/mqdefault.jpg)](https://www.youtube.com/watch?v=E6K9snep79o)
+ 
 ## Features
 
 - **Syntax highlighting** via TextMate grammar
