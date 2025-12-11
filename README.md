@@ -74,11 +74,27 @@ Type a prefix and press `Tab` to expand. Available templates:
 
 ## Preview Rendering
 
-The preview uses [djot.js](https://github.com/jgm/djot.js) (loaded from CDN) for accurate Djot rendering with:
+The plugin supports two rendering engines, configurable via **Settings > Tools > Djot**:
+
+### djot.js (default)
+
+Uses [djot.js](https://github.com/jgm/djot.js) for accurate Djot rendering with:
 - Code syntax highlighting (highlight.js)
 - IDE theme synchronization (dark/light)
 - Task list checkboxes
 - Full Djot feature support
+- No additional dependencies required
+
+### php-djot (PHP CLI)
+
+Uses [php-collective/djot](https://github.com/php-collective/djot) for rendering via PHP CLI:
+- Requires PHP installed on your system
+- Requires `php-collective/djot` installed in your project:
+  ```bash
+  composer require php-collective/djot
+  ```
+- Useful for consistency with PHP-based projects
+- Supports custom converter scripts
 
 ## About Djot
 
