@@ -4,7 +4,6 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.colors.EditorColorsListener
 import com.intellij.openapi.editor.colors.EditorColorsManager
-import com.intellij.openapi.editor.colors.EditorColorsScheme
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -12,6 +11,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.util.messages.MessageBusConnection
+import org.phpcollective.djot.DjotConverter
+import org.phpcollective.djot.settings.DjotRenderer
+import org.phpcollective.djot.settings.DjotSettings
 import java.awt.BorderLayout
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JComponent
@@ -28,6 +30,7 @@ class DjotPreviewPanel(
     private val updatePending = AtomicBoolean(false)
     private val updateTimer: Timer
     private var initialized = false
+    private var initializedWithPhp = false
     private val messageBusConnection: MessageBusConnection
 
     private val documentListener = object : DocumentListener {
@@ -93,18 +96,39 @@ class DjotPreviewPanel(
         }
     }
 
+    private fun usePhpRenderer(): Boolean {
+        return DjotSettings.getInstance(project).renderer == DjotRenderer.DJOT_PHP
+    }
+
     private fun loadPreviewShell() {
         val document = FileDocumentManager.getInstance().getDocument(file)
         val content = document?.text ?: ""
-        val escapedContent = escapeForJs(content)
         val isDark = isDarkTheme()
+        val usePhp = usePhpRenderer()
 
-        browser.loadHTML(createPreviewHtml(escapedContent, isDark))
-        initialized = true
+        if (usePhp) {
+            ApplicationManager.getApplication().executeOnPooledThread {
+                val html = DjotConverter.toHtml(content, project)
+                ApplicationManager.getApplication().invokeLater {
+                    browser.loadHTML(createPreviewHtmlForPhp(html, isDark))
+                    initialized = true
+                    initializedWithPhp = true
+                }
+            }
+        } else {
+            val escapedContent = escapeForJs(content)
+            browser.loadHTML(createPreviewHtml(escapedContent, isDark))
+            initialized = true
+            initializedWithPhp = false
+        }
     }
 
     private fun updatePreview() {
-        if (!initialized) {
+        val usePhp = usePhpRenderer()
+
+        // If renderer mode changed, reload the shell completely
+        if (!initialized || usePhp != initializedWithPhp) {
+            initialized = false
             loadPreviewShell()
             return
         }
@@ -112,15 +136,26 @@ class DjotPreviewPanel(
         ApplicationManager.getApplication().executeOnPooledThread {
             val document = FileDocumentManager.getInstance().getDocument(file)
             val content = document?.text ?: return@executeOnPooledThread
-            val escapedContent = escapeForJs(content)
 
-            ApplicationManager.getApplication().invokeLater {
-                // Execute JS to update content
-                browser.cefBrowser.executeJavaScript(
-                    "updateContent(`$escapedContent`);",
-                    browser.cefBrowser.url,
-                    0
-                )
+            if (usePhp) {
+                val html = DjotConverter.toHtml(content, project)
+                val escapedHtml = escapeForJs(html)
+                ApplicationManager.getApplication().invokeLater {
+                    browser.cefBrowser.executeJavaScript(
+                        "updateContentHtml(`$escapedHtml`);",
+                        browser.cefBrowser.url,
+                        0
+                    )
+                }
+            } else {
+                val escapedContent = escapeForJs(content)
+                ApplicationManager.getApplication().invokeLater {
+                    browser.cefBrowser.executeJavaScript(
+                        "updateContent(`$escapedContent`);",
+                        browser.cefBrowser.url,
+                        0
+                    )
+                }
             }
         }
     }
@@ -305,6 +340,137 @@ class DjotPreviewPanel(
         // Also try immediately in case DOMContentLoaded already fired
         if (document.readyState !== 'loading') {
             updateContent(`$initialContent`);
+        }
+    </script>
+</body>
+</html>
+        """.trimIndent()
+    }
+
+    private fun createPreviewHtmlForPhp(initialHtml: String, isDark: Boolean): String {
+        val themeClass = if (isDark) "dark" else "light"
+        return """
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #333;
+            background: #fff;
+        }
+        body.dark {
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        body.dark a { color: #6db3f2; }
+        body.dark code, body.dark pre { background: #2d2d2d; }
+        body.dark blockquote { border-color: #444; color: #aaa; }
+        body.dark table, body.dark th, body.dark td { border-color: #444; }
+        body.dark th { background: #2d2d2d; }
+        body.dark hr { border-color: #444; }
+        body.dark h1 { color: #e0e0e0; border-bottom-color: #6db3f2; }
+        body.dark h2 { color: #c0c0c0; border-bottom-color: #444; }
+        body.dark h3, body.dark h4, body.dark h5, body.dark h6 { color: #a0a0a0; }
+        body.dark mark { background: #5a5000; color: #fff; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; }
+        h2 { color: #34495e; border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
+        h3, h4, h5, h6 { color: #7f8c8d; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { background: none; padding: 0; }
+        blockquote {
+            border-left: 4px solid #3498db;
+            margin: 1em 0;
+            padding: 0.5em 0 0.5em 20px;
+            color: #666;
+        }
+        blockquote p { margin: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th { background: #f8f9fa; font-weight: 600; }
+        mark { background: #fff3cd; padding: 2px 4px; border-radius: 2px; }
+        del { color: #dc3545; text-decoration: line-through; }
+        ins { color: #28a745; text-decoration: none; border-bottom: 1px solid #28a745; }
+        a { color: #3498db; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        img { max-width: 100%; height: auto; }
+        hr { border: none; border-top: 1px solid #ddd; margin: 2em 0; }
+        ul, ol { padding-left: 2em; }
+        li { margin: 0.25em 0; }
+        li:has(> input[type="checkbox"]) { list-style: none; margin-left: -1.5em; }
+        li > input[type="checkbox"] { margin-right: 0.5em; width: 1em; height: 1em; vertical-align: middle; }
+        li > input[type="checkbox"]:checked { accent-color: #3498db; }
+        sup, sub { font-size: 0.75em; }
+        dt { font-weight: bold; margin-top: 1em; }
+        dd { margin-left: 2em; }
+        .footnote-ref { font-size: 0.75em; vertical-align: super; }
+        .footnotes { border-top: 1px solid #ddd; margin-top: 2em; padding-top: 1em; font-size: 0.9em; }
+        .math { font-family: 'Times New Roman', serif; font-style: italic; }
+        #content { min-height: 100px; }
+        #error { color: #dc3545; background: #f8d7da; padding: 10px; border-radius: 5px; display: none; }
+        body.dark #error { background: #5a2d2d; color: #f8d7da; }
+    </style>
+    <link id="hljs-light" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css"${if (isDark) " disabled" else ""}>
+    <link id="hljs-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css"${if (!isDark) " disabled" else ""}>
+    <style>
+        body.light pre code.hljs { background: #f6f8fa; }
+        body.dark pre code.hljs { background: #161b22; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+</head>
+<body class="$themeClass">
+    <div id="error"></div>
+    <div id="content">$initialHtml</div>
+    <script>
+        function updateContentHtml(html) {
+            const contentEl = document.getElementById('content');
+            const errorEl = document.getElementById('error');
+            errorEl.style.display = 'none';
+            contentEl.innerHTML = html;
+            highlightCode();
+        }
+
+        function highlightCode() {
+            if (typeof hljs !== 'undefined') {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            }
+        }
+
+        // Initial highlight
+        document.addEventListener('DOMContentLoaded', function() {
+            highlightCode();
+        });
+
+        if (document.readyState !== 'loading') {
+            highlightCode();
         }
     </script>
 </body>

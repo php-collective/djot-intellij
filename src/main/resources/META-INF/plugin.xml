@@ -48,6 +48,16 @@
 
         <!-- Live templates for Djot -->
         <defaultLiveTemplates file="/liveTemplates/Djot.xml"/>
+
+        <!-- Settings -->
+        <projectConfigurable
+                instance="org.phpcollective.djot.settings.DjotSettingsConfigurable"
+                id="org.phpcollective.djot.settings"
+                displayName="Djot"
+                parentId="tools"/>
+
+        <projectService
+                serviceImplementation="org.phpcollective.djot.settings.DjotSettings"/>
     </extensions>
 
     <actions>

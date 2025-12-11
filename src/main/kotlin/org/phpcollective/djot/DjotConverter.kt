@@ -1,11 +1,14 @@
 package org.phpcollective.djot
 
+import com.intellij.openapi.project.Project
 import org.graalvm.polyglot.Context
 import org.graalvm.polyglot.Source
+import org.phpcollective.djot.settings.DjotRenderer
+import org.phpcollective.djot.settings.DjotSettings
 import java.net.URL
 
 /**
- * Converts Djot markup to HTML using djot.js via GraalJS.
+ * Converts Djot markup to HTML using djot.js via GraalJS or php-djot via CLI.
  */
 object DjotConverter {
 
@@ -24,7 +27,31 @@ object DjotConverter {
             .option("engine.WarnInterpreterOnly", "false")
     }
 
-    fun toHtml(djot: String): String {
+    fun toHtml(djot: String, project: Project? = null): String {
+        if (project != null) {
+            val settings = DjotSettings.getInstance(project)
+            if (settings.renderer == DjotRenderer.DJOT_PHP) {
+                val result = PhpDjotConverter.toHtml(
+                    djot = djot,
+                    phpPath = settings.phpPath,
+                    scriptPath = settings.phpDjotScript,
+                    workingDir = project.basePath,
+                )
+                if (result.isSuccess) {
+                    return result.getOrThrow()
+                }
+                // Return error message on failure instead of silent fallback
+                val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                return """<div style="color: red; padding: 10px; background: #fee; border-radius: 5px;">
+                    <strong>PHP Djot Error:</strong> $error
+                </div>"""
+            }
+        }
+
+        return toHtmlWithJs(djot)
+    }
+
+    private fun toHtmlWithJs(djot: String): String {
         if (djotJs.isEmpty()) {
             return fallbackConvert(djot)
         }

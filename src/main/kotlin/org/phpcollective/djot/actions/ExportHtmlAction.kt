@@ -33,7 +33,7 @@ class ExportHtmlAction : AnAction() {
 
         // Convert and save
         ApplicationManager.getApplication().executeOnPooledThread {
-            val html = convertToHtml(content)
+            val html = DjotConverter.toHtml(content, project)
             val fullHtml = wrapFullHtml(file.nameWithoutExtension, html)
 
             ApplicationManager.getApplication().invokeLater {
@@ -53,10 +53,6 @@ class ExportHtmlAction : AnAction() {
                 }
             }
         }
-    }
-
-    private fun convertToHtml(djot: String): String {
-        return DjotConverter.toHtml(djot)
     }
 
     private fun wrapFullHtml(title: String, content: String): String {
