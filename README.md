@@ -123,3 +123,13 @@ Uses [php-collective/djot](https://github.com/php-collective/djot) for rendering
 ```bash
 ./gradlew runIde
 ```
+
+### Publishing
+
+To publish to JetBrains Marketplace:
+
+```bash
+PUBLISH_TOKEN="your-token" ./gradlew publishPlugin
+```
+
+Get your token at https://plugins.jetbrains.com/author/me/tokens

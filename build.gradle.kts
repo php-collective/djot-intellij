@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.phpcollective"
-version = "1.0.1"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
