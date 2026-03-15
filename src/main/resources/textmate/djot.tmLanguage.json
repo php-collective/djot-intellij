@@ -351,8 +351,9 @@
       ]
     },
     "paragraph": {
+      "comment": "Paragraph ends at blank line OR when fenced comment starts (allowing interruption)",
       "begin": "^(?=\\S)",
-      "end": "^\\s*$",
+      "end": "^\\s*$|^(?=%{3,}\\s*$)",
       "patterns": [
         { "include": "#inline" }
       ]
