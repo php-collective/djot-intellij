@@ -6,6 +6,7 @@
   "patterns": [
     { "include": "#frontmatter" },
     { "include": "#comment-block" },
+    { "include": "#comment-fenced" },
     { "include": "#heading" },
     { "include": "#codeblock-raw" },
     { "include": "#codeblock" },
@@ -47,6 +48,18 @@
       },
       "name": "comment.block.djot"
     },
+    "comment-fenced": {
+      "comment": "Fenced comment block %%% ... %%%",
+      "begin": "^(%{3,})\\s*$",
+      "end": "^(\\1)\\s*$",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.comment.begin.djot" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.comment.end.djot" }
+      },
+      "name": "comment.block.fenced.djot"
+    },
     "heading": {
       "patterns": [
         {
@@ -66,11 +79,11 @@
       "begin": "^(`{3,})=([a-zA-Z0-9_-]+)\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.code.fence.djot" },
+        "1": { "name": "string.other.begin.code.fence.djot" },
         "2": { "name": "entity.name.type.format.djot" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.code.fence.djot" }
+        "1": { "name": "string.other.end.code.fence.djot" }
       },
       "contentName": "markup.raw.block.djot"
     },
@@ -78,12 +91,12 @@
       "begin": "^(`{3,})([a-zA-Z0-9_+-]*)?(\\s*\\{[^}]*\\})?\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.code.fence.djot" },
+        "1": { "name": "string.other.begin.code.fence.djot" },
         "2": { "name": "entity.name.function.language.djot" },
         "3": { "name": "entity.other.attribute.djot" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.code.fence.djot" }
+        "1": { "name": "string.other.end.code.fence.djot" }
       },
       "contentName": "markup.raw.code.fenced.djot",
       "patterns": [
@@ -120,12 +133,12 @@
       "begin": "^(:::+)\\s*(\\w[\\w-]*)?(\\s*\\{[^}]*\\})?\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.div.begin.djot" },
+        "1": { "name": "keyword.control.div.begin.djot" },
         "2": { "name": "entity.name.tag.div.djot" },
         "3": { "name": "entity.other.attribute.djot" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.div.end.djot" }
+        "1": { "name": "keyword.control.div.end.djot" }
       },
       "patterns": [
         { "include": "$self" }
@@ -148,7 +161,7 @@
           "comment": "Definition term",
           "match": "^(:)\\s+(.+)$",
           "captures": {
-            "1": { "name": "punctuation.definition.term.djot" },
+            "1": { "name": "keyword.operator.definition.djot" },
             "2": {
               "name": "markup.bold.term.djot",
               "patterns": [{ "include": "#inline" }]
@@ -160,25 +173,33 @@
     "list": {
       "patterns": [
         {
-          "comment": "Task list item",
-          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[ xX]\\])\\s*",
+          "comment": "Task list item - checked",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[xX]\\])\\s*",
           "captures": {
-            "2": { "name": "punctuation.definition.list.marker.djot" },
-            "3": { "name": "punctuation.definition.checkbox.djot keyword.control.checkbox.djot" }
+            "2": { "name": "keyword.operator.list.marker.djot" },
+            "3": { "name": "markup.inserted.checkbox.checked.djot" }
+          }
+        },
+        {
+          "comment": "Task list item - unchecked",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[ _]\\])\\s*",
+          "captures": {
+            "2": { "name": "keyword.operator.list.marker.djot" },
+            "3": { "name": "markup.deleted.checkbox.unchecked.djot" }
           }
         },
         {
           "comment": "Unordered/ordered list item",
           "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+",
           "captures": {
-            "2": { "name": "punctuation.definition.list.marker.djot" }
+            "2": { "name": "keyword.operator.list.marker.djot" }
           }
         }
       ]
     },
     "thematic-break": {
       "match": "^(\\*{3,}|-{3,})\\s*$",
-      "name": "markup.separator.thematic-break.djot"
+      "name": "keyword.control.thematic-break.djot"
     },
     "table": {
       "patterns": [
@@ -303,6 +324,7 @@
     "inline": {
       "patterns": [
         { "include": "#escape" },
+        { "include": "#comment-inline" },
         { "include": "#raw-inline" },
         { "include": "#code-inline" },
         { "include": "#math-inline" },
@@ -323,6 +345,11 @@
         { "include": "#hard-break" },
         { "include": "#inline-attribute" }
       ]
+    },
+    "comment-inline": {
+      "comment": "Inline comment {% ... %}",
+      "match": "\\{%[^%]*%\\}",
+      "name": "comment.inline.djot"
     },
     "escape": {
       "match": "\\\\.",
