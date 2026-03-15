@@ -74,13 +74,13 @@ ORDER BY order_count DESC;
 
 Raw blocks pass content through without processing, with a format specifier:
 
-```=html
+``` =html
 <div class="custom-html">
     <p>This is <strong>raw HTML</strong> content.</p>
 </div>
 ```
 
-```=latex
+``` =latex
 \begin{equation}
 E = mc^2
 \end{equation}

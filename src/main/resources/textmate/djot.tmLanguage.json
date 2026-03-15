@@ -37,15 +37,13 @@
       "contentName": "markup.raw.yaml.frontmatter.djot"
     },
     "comment-block": {
-      "begin": "^(\\{%)\\s*comment\\s*(%\\})\\s*$",
-      "end": "^(\\{%)\\s*endcomment\\s*(%\\})\\s*$",
+      "begin": "^(\\{%)",
+      "end": "(%\\})",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.comment.djot" },
-        "2": { "name": "punctuation.definition.comment.djot" }
+        "1": { "name": "punctuation.definition.comment.begin.djot" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.comment.djot" },
-        "2": { "name": "punctuation.definition.comment.djot" }
+        "1": { "name": "punctuation.definition.comment.end.djot" }
       },
       "name": "comment.block.djot"
     },
@@ -76,8 +74,8 @@
       ]
     },
     "codeblock-raw": {
-      "comment": "Raw code block with format specifier ```=html",
-      "begin": "^(`{3,})(=)([a-zA-Z0-9_-]+)\\s*$",
+      "comment": "Raw code block with format specifier ``` =html",
+      "begin": "^(`{3,}) +=([a-zA-Z0-9_-]+)\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
         "1": { "name": "string.other.begin.code.fence.djot" },
@@ -358,24 +356,25 @@
         { "include": "#inline-attribute" }
       ]
     },
+    "escape": {
+      "match": "\\\\.",
+      "name": "constant.character.escape.djot"
+    },
     "comment-inline": {
       "comment": "Inline comment {% ... %}",
       "match": "\\{%[^%]*%\\}",
       "name": "comment.inline.djot"
     },
-    "escape": {
-      "match": "\\\\.",
-      "name": "constant.character.escape.djot"
-    },
     "raw-inline": {
-      "comment": "Raw inline with format `=html content`",
-      "match": "(`+)(=)([a-zA-Z0-9_-]+)\\s([^`]+)(\\1)",
+      "comment": "Raw inline with trailing format marker `content`{=html}",
+      "match": "(`+)([^`]+)(\\1)(\\{=)([a-zA-Z0-9_-]+)(\\})",
       "captures": {
         "1": { "name": "string.other.begin.code.djot" },
-        "2": { "name": "keyword.operator.raw.djot" },
-        "3": { "name": "entity.name.type.format.djot" },
-        "4": { "name": "markup.raw.inline.djot" },
-        "5": { "name": "string.other.end.code.djot" }
+        "2": { "name": "markup.raw.inline.djot" },
+        "3": { "name": "string.other.end.code.djot" },
+        "4": { "name": "keyword.operator.raw.djot" },
+        "5": { "name": "entity.name.type.format.djot" },
+        "6": { "name": "punctuation.definition.raw.format.end.djot" }
       }
     },
     "code-inline": {
