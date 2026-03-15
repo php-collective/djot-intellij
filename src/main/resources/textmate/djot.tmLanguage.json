@@ -379,18 +379,52 @@
       }
     },
     "link": {
-      "match": "(\\[)([^\\]]+)(\\])(\\()([^)]*)(\\))",
-      "captures": {
-        "1": { "name": "punctuation.definition.link.begin.djot" },
-        "2": {
-          "name": "string.other.link.title.djot",
-          "patterns": [{ "include": "#inline" }]
+      "patterns": [
+        {
+          "comment": "Inline link [text](url)",
+          "match": "(\\[)([^\\]]+)(\\])(\\()([^)]*)(\\))",
+          "captures": {
+            "1": { "name": "punctuation.definition.link.begin.djot" },
+            "2": {
+              "name": "string.other.link.title.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "3": { "name": "punctuation.definition.link.end.djot" },
+            "4": { "name": "punctuation.definition.link.url.begin.djot" },
+            "5": { "name": "markup.underline.link.djot" },
+            "6": { "name": "punctuation.definition.link.url.end.djot" }
+          }
         },
-        "3": { "name": "punctuation.definition.link.end.djot" },
-        "4": { "name": "punctuation.definition.link.url.begin.djot" },
-        "5": { "name": "markup.underline.link.djot" },
-        "6": { "name": "punctuation.definition.link.url.end.djot" }
-      }
+        {
+          "comment": "Reference link [text][ref]",
+          "match": "(\\[)([^\\]]+)(\\])(\\[)([^\\]]*)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.link.begin.djot" },
+            "2": {
+              "name": "string.other.link.title.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "3": { "name": "punctuation.definition.link.end.djot" },
+            "4": { "name": "punctuation.definition.reference.begin.djot" },
+            "5": { "name": "entity.name.reference.djot" },
+            "6": { "name": "punctuation.definition.reference.end.djot" }
+          }
+        },
+        {
+          "comment": "Shortcut reference link [ref][]",
+          "match": "(\\[)([^\\]]+)(\\])(\\[)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.link.begin.djot" },
+            "2": {
+              "name": "string.other.link.title.djot entity.name.reference.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "3": { "name": "punctuation.definition.link.end.djot" },
+            "4": { "name": "punctuation.definition.reference.begin.djot" },
+            "5": { "name": "punctuation.definition.reference.end.djot" }
+          }
+        }
+      ]
     },
     "footnote-ref": {
       "match": "(\\[\\^)([^\\]]+)(\\])",
@@ -488,31 +522,59 @@
       ]
     },
     "superscript": {
-      "begin": "(\\{\\^)",
-      "end": "(\\^\\})",
-      "beginCaptures": {
-        "1": { "name": "punctuation.definition.superscript.begin.djot" }
-      },
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.superscript.end.djot" }
-      },
-      "name": "markup.superscript.djot",
       "patterns": [
-        { "include": "#inline" }
+        {
+          "comment": "Braced superscript {^text^}",
+          "begin": "(\\{\\^)",
+          "end": "(\\^\\})",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.superscript.begin.djot" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.superscript.end.djot" }
+          },
+          "name": "markup.superscript.djot",
+          "patterns": [
+            { "include": "#inline" }
+          ]
+        },
+        {
+          "comment": "Shorthand superscript ^text^",
+          "match": "(\\^)([^\\^\\s][^\\^]*[^\\^\\s]|[^\\^\\s])(\\^)",
+          "captures": {
+            "1": { "name": "punctuation.definition.superscript.begin.djot" },
+            "2": { "name": "markup.superscript.djot" },
+            "3": { "name": "punctuation.definition.superscript.end.djot" }
+          }
+        }
       ]
     },
     "subscript": {
-      "begin": "(\\{~)",
-      "end": "(~\\})",
-      "beginCaptures": {
-        "1": { "name": "punctuation.definition.subscript.begin.djot" }
-      },
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.subscript.end.djot" }
-      },
-      "name": "markup.subscript.djot",
       "patterns": [
-        { "include": "#inline" }
+        {
+          "comment": "Braced subscript {~text~}",
+          "begin": "(\\{~)",
+          "end": "(~\\})",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.subscript.begin.djot" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.subscript.end.djot" }
+          },
+          "name": "markup.subscript.djot",
+          "patterns": [
+            { "include": "#inline" }
+          ]
+        },
+        {
+          "comment": "Shorthand subscript ~text~",
+          "match": "(~)([^~\\s][^~]*[^~\\s]|[^~\\s])(~)",
+          "captures": {
+            "1": { "name": "punctuation.definition.subscript.begin.djot" },
+            "2": { "name": "markup.subscript.djot" },
+            "3": { "name": "punctuation.definition.subscript.end.djot" }
+          }
+        }
       ]
     },
     "symbol": {
