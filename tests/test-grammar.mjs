@@ -523,7 +523,7 @@ const testCases = [
     input: '{=highlighted=}',
     expects: [
       { token: '{=', scope: 'punctuation.definition.highlight.begin.djot' },
-      { token: 'highlighted', scope: 'markup.highlight.djot' },
+      { token: 'highlighted', scope: 'markup.changed.highlight.djot' },
       { token: '=}', scope: 'punctuation.definition.highlight.end.djot' },
     ]
   },

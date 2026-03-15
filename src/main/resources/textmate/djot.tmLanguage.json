@@ -620,22 +620,40 @@
       }
     },
     "strong": {
-      "comment": "Strong *text*",
-      "match": "(\\*)(\\S.*?\\S|\\S)(\\*)",
-      "captures": {
-        "1": { "name": "punctuation.definition.bold.begin.djot" },
-        "2": { "name": "markup.bold.djot" },
-        "3": { "name": "punctuation.definition.bold.end.djot" }
-      }
+      "comment": "Strong *text* - not in middle of words",
+      "begin": "(?<![\\w])(\\*)(?=\\S)",
+      "end": "(\\*)(?![\\w])",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.bold.begin.djot" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.bold.end.djot" }
+      },
+      "name": "markup.bold.djot",
+      "patterns": [
+        { "include": "#emphasis" },
+        { "include": "#inline-code" },
+        { "include": "#link" },
+        { "include": "#image" }
+      ]
     },
     "emphasis": {
-      "comment": "Emphasis _text_",
-      "match": "(_)(\\S.*?\\S|\\S)(_)",
-      "captures": {
-        "1": { "name": "punctuation.definition.italic.begin.djot" },
-        "2": { "name": "markup.italic.djot" },
-        "3": { "name": "punctuation.definition.italic.end.djot" }
-      }
+      "comment": "Emphasis _text_ - not in middle of words",
+      "begin": "(?<![\\w])(_)(?=\\S)",
+      "end": "(_)(?![\\w])",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.italic.begin.djot" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.italic.end.djot" }
+      },
+      "name": "markup.italic.djot",
+      "patterns": [
+        { "include": "#strong" },
+        { "include": "#inline-code" },
+        { "include": "#link" },
+        { "include": "#image" }
+      ]
     },
     "highlight": {
       "begin": "(\\{=)",
