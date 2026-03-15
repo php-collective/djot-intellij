@@ -268,7 +268,7 @@
       ]
     },
     "reference-definition": {
-      "match": "^(\\[)([^\\]]+)(\\])(:)\\s*(.+)$",
+      "match": "^(\\[)(?!\\^)([^\\]]+)(\\])(:)\\s*(.+)$",
       "captures": {
         "1": { "name": "punctuation.definition.reference.begin.djot" },
         "2": { "name": "entity.name.reference.djot" },
@@ -310,7 +310,8 @@
       }
     },
     "block-attribute": {
-      "match": "^(\\{)([^}]+)(\\})\\s*$",
+      "comment": "Block attributes like {.class} or {#id}. Excludes inline markers: {= {+ {- {^ {~ {%",
+      "match": "^(\\{)(?![=+\\-^~%])([^}]+)(\\})\\s*$",
       "captures": {
         "1": { "name": "punctuation.definition.attribute.begin.djot" },
         "2": {
