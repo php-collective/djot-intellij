@@ -76,11 +76,12 @@
     },
     "codeblock-raw": {
       "comment": "Raw code block with format specifier ```=html",
-      "begin": "^(`{3,})=([a-zA-Z0-9_-]+)\\s*$",
+      "begin": "^(`{3,})(=)([a-zA-Z0-9_-]+)\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
         "1": { "name": "string.other.begin.code.fence.djot" },
-        "2": { "name": "entity.name.type.format.djot" }
+        "2": { "name": "keyword.operator.raw.djot" },
+        "3": { "name": "entity.name.type.format.djot" }
       },
       "endCaptures": {
         "1": { "name": "string.other.end.code.fence.djot" }
@@ -359,19 +360,19 @@
       "comment": "Raw inline with format `=html content`",
       "match": "(`+)(=)([a-zA-Z0-9_-]+)\\s([^`]+)(\\1)",
       "captures": {
-        "1": { "name": "punctuation.definition.raw.begin.djot" },
-        "2": { "name": "punctuation.definition.raw.format.djot" },
+        "1": { "name": "string.other.begin.code.djot" },
+        "2": { "name": "keyword.operator.raw.djot" },
         "3": { "name": "entity.name.type.format.djot" },
         "4": { "name": "markup.raw.inline.djot" },
-        "5": { "name": "punctuation.definition.raw.end.djot" }
+        "5": { "name": "string.other.end.code.djot" }
       }
     },
     "code-inline": {
       "match": "(`+)([^`]+)(\\1)",
       "captures": {
-        "1": { "name": "punctuation.definition.code.begin.djot" },
+        "1": { "name": "string.other.begin.code.djot" },
         "2": { "name": "markup.raw.inline.code.djot" },
-        "3": { "name": "punctuation.definition.code.end.djot" }
+        "3": { "name": "string.other.end.code.djot" }
       }
     },
     "math-inline": {
