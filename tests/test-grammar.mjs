@@ -186,6 +186,21 @@ const testCases = [
       { token: '%%%%', scope: 'punctuation.definition.comment.begin.djot' },
     ]
   },
+  {
+    name: 'Fenced comment interrupting paragraph',
+    input: 'Lorem ipsum\n%%%\ncomment\n%%%\ndolor sit amet',
+    expects: [
+      { token: '%%%', scope: 'punctuation.definition.comment.begin.djot' },
+      { token: 'comment', scope: 'comment.block.fenced.djot' },
+    ]
+  },
+  {
+    name: 'Fenced comment after paragraph with blank line',
+    input: 'Text here\n\n%%%\ncomment\n%%%',
+    expects: [
+      { token: '%%%', scope: 'punctuation.definition.comment.begin.djot' },
+    ]
+  },
 
   // ==================== TASK LISTS ====================
   {
