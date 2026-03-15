@@ -20,6 +20,7 @@
     { "include": "#table" },
     { "include": "#reference-definition" },
     { "include": "#footnote-definition" },
+    { "include": "#abbreviation-definition" },
     { "include": "#block-attribute" },
     { "include": "#paragraph" }
   ],
@@ -112,10 +113,10 @@
       "begin": "^(\\$\\$)(`?)\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.math.begin.djot" }
+        "1": { "name": "keyword.control.math.begin.djot" }
       },
       "endCaptures": {
-        "1": { "name": "punctuation.definition.math.end.djot" }
+        "1": { "name": "keyword.control.math.end.djot" }
       },
       "contentName": "markup.math.display.djot"
     },
@@ -123,7 +124,7 @@
       "begin": "^(>)\\s?",
       "while": "^(>)\\s?|^(?=\\s*$)",
       "beginCaptures": {
-        "1": { "name": "punctuation.definition.quote.djot" }
+        "1": { "name": "keyword.operator.blockquote.djot" }
       },
       "patterns": [
         { "include": "#inline" }
@@ -149,7 +150,7 @@
     "line-block": {
       "match": "^(\\|)\\s(.*)$",
       "captures": {
-        "1": { "name": "punctuation.definition.line-block.djot" },
+        "1": { "name": "keyword.operator.line-block.djot" },
         "2": {
           "patterns": [{ "include": "#inline" }]
         }
@@ -199,7 +200,7 @@
       ]
     },
     "thematic-break": {
-      "match": "^(\\*{3,}|-{3,})\\s*$",
+      "match": "^(\\*{3,}|-{3,}|_{3,})\\s*$",
       "name": "keyword.control.thematic-break.djot"
     },
     "table": {
@@ -225,10 +226,10 @@
           "begin": "^(\\|)",
           "end": "(\\|)(\\s*\\{[^}]*\\})?\\s*$",
           "beginCaptures": {
-            "1": { "name": "punctuation.definition.table.pipe.djot" }
+            "1": { "name": "keyword.operator.table.pipe.djot" }
           },
           "endCaptures": {
-            "1": { "name": "punctuation.definition.table.pipe.djot" },
+            "1": { "name": "keyword.operator.table.pipe.djot" },
             "2": { "name": "entity.other.attribute.djot" }
           },
           "patterns": [
@@ -251,7 +252,7 @@
         {
           "comment": "Cell separator",
           "match": "\\|",
-          "name": "punctuation.definition.table.pipe.djot"
+          "name": "keyword.operator.table.pipe.djot"
         },
         { "include": "#inline" }
       ]
@@ -273,6 +274,16 @@
         "2": { "name": "entity.name.footnote.djot constant.other.footnote.djot" },
         "3": { "name": "punctuation.definition.footnote.end.djot" },
         "4": { "name": "punctuation.separator.definition.djot" }
+      }
+    },
+    "abbreviation-definition": {
+      "match": "^(\\*\\[)([^\\]]+)(\\])(:)\\s*(.+)$",
+      "captures": {
+        "1": { "name": "punctuation.definition.abbreviation.begin.djot" },
+        "2": { "name": "entity.name.abbreviation.djot" },
+        "3": { "name": "punctuation.definition.abbreviation.end.djot" },
+        "4": { "name": "punctuation.separator.definition.djot" },
+        "5": { "name": "string.unquoted.abbreviation.definition.djot" }
       }
     },
     "block-attribute": {
