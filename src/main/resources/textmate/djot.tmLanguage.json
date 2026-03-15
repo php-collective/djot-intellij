@@ -399,8 +399,8 @@
       "name": "comment.inline.djot"
     },
     "raw-inline": {
-      "comment": "Raw inline with trailing format marker `content`{=html}",
-      "match": "(`+)([^`]+)(\\1)(\\{=)([a-zA-Z0-9_-]+)(\\})",
+      "comment": "Raw inline with trailing format marker `content`{=html}. Uses lazy match for nested backticks.",
+      "match": "(`+)(.+?)(\\1)(\\{=)([a-zA-Z0-9_-]+)(\\})",
       "captures": {
         "1": { "name": "string.other.begin.code.djot" },
         "2": { "name": "markup.raw.inline.djot" },
@@ -411,7 +411,8 @@
       }
     },
     "code-inline": {
-      "match": "(`+)([^`]+)(\\1)",
+      "comment": "Inline code with variable backtick count. Uses lazy match to allow nested backticks.",
+      "match": "(`+)(.+?)(\\1)",
       "captures": {
         "1": { "name": "string.other.begin.code.djot" },
         "2": { "name": "markup.raw.inline.code.djot" },

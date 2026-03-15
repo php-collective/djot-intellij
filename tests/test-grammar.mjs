@@ -116,7 +116,15 @@ const testCases = [
       { token: 'latex', scope: 'entity.name.type.format.djot' },
     ]
   },
-  // NOTE: Code block with inline attributes not yet implemented
+  {
+    name: 'Code block with attributes',
+    input: '```js {.highlight}\ncode\n```',
+    expects: [
+      { token: '```', scope: 'string.other.begin.code.fence.djot' },
+      { token: 'js', scope: 'entity.name.function.language.djot' },
+      { token: ' {.highlight}', scope: 'entity.other.attribute.djot' },
+    ]
+  },
 
   // ==================== INLINE CODE ====================
   {
@@ -127,7 +135,24 @@ const testCases = [
       { token: 'print()', scope: 'markup.raw.inline.code.djot' },
     ]
   },
-  // NOTE: Double backtick inline code not yet implemented
+  {
+    name: 'Double backtick inline code',
+    input: '`` `code` ``',
+    expects: [
+      { token: '``', scope: 'string.other.begin.code.djot' },
+      { token: ' `code` ', scope: 'markup.raw.inline.code.djot' },
+      { token: '``', scope: 'string.other.end.code.djot' },
+    ]
+  },
+  {
+    name: 'Triple backtick inline code',
+    input: '``` ``nested`` ```',
+    expects: [
+      { token: '```', scope: 'string.other.begin.code.djot' },
+      { token: ' ``nested`` ', scope: 'markup.raw.inline.code.djot' },
+      { token: '```', scope: 'string.other.end.code.djot' },
+    ]
+  },
   {
     name: 'Raw inline with format',
     input: '`<b>raw</b>`{=html}',
@@ -342,7 +367,17 @@ const testCases = [
       { token: 'ref', scope: 'entity.name.reference.djot' },
     ]
   },
-  // NOTE: Shortcut reference link [ref][] not yet implemented
+  {
+    name: 'Shortcut reference link',
+    input: '[ref][]',
+    expects: [
+      { token: '[', scope: 'punctuation.definition.link.begin.djot' },
+      { token: 'ref', scope: 'string.other.link.title.djot' },
+      { token: ']', scope: 'punctuation.definition.link.end.djot' },
+      { token: '[', scope: 'punctuation.definition.reference.begin.djot' },
+      { token: ']', scope: 'punctuation.definition.reference.end.djot' },
+    ]
+  },
   {
     name: 'Reference definition',
     input: '[ref]: https://example.com',
