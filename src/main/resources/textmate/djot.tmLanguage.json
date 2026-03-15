@@ -192,9 +192,9 @@
       ]
     },
     "div-paragraph": {
-      "comment": "Paragraph inside div - ends at blank line, fenced comment, OR div closing marker",
+      "comment": "Paragraph inside div - ends at blank line, fenced comment, div closing marker, or thematic break",
       "begin": "^(?=\\S)",
-      "end": "^\\s*$|^(?=%{3,}\\s*$)|^(?=:{3,}\\s*$)",
+      "end": "^\\s*$|^(?=%{3,}\\s*$)|^(?=:{3,}\\s*$)|^(?=[*_-]{3,}\\s*$)",
       "patterns": [
         { "include": "#inline" }
       ]
@@ -409,9 +409,9 @@
       ]
     },
     "paragraph": {
-      "comment": "Paragraph ends at blank line OR when fenced comment starts (allowing interruption)",
+      "comment": "Paragraph ends at blank line, fenced comment, or thematic break (allowing interruption)",
       "begin": "^(?=\\S)",
-      "end": "^\\s*$|^(?=%{3,}\\s*$)",
+      "end": "^\\s*$|^(?=%{3,}\\s*$)|^(?=[*_-]{3,}\\s*$)",
       "patterns": [
         { "include": "#inline" }
       ]
@@ -658,7 +658,7 @@
       "endCaptures": {
         "1": { "name": "punctuation.definition.highlight.end.djot" }
       },
-      "name": "markup.highlight.djot",
+      "name": "markup.changed.highlight.djot",
       "patterns": [
         { "include": "#inline" }
       ]
