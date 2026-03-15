@@ -160,11 +160,19 @@
     "list": {
       "patterns": [
         {
-          "comment": "Task list item",
-          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[ xX]\\])\\s*",
+          "comment": "Task list item - checked",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[xX]\\])\\s*",
           "captures": {
             "2": { "name": "punctuation.definition.list.marker.djot" },
-            "3": { "name": "punctuation.definition.checkbox.djot keyword.control.checkbox.djot" }
+            "3": { "name": "markup.inserted.checkbox.djot" }
+          }
+        },
+        {
+          "comment": "Task list item - unchecked",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[ _]\\])\\s*",
+          "captures": {
+            "2": { "name": "punctuation.definition.list.marker.djot" },
+            "3": { "name": "markup.deleted.checkbox.djot" }
           }
         },
         {
