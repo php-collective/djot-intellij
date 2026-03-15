@@ -36,7 +36,7 @@ Thank you for your interest in contributing!
 │   └── resources/
 │       ├── META-INF/plugin.xml      # Plugin configuration
 │       ├── icons/                   # Plugin icons
-│       └── textmate/                # TextMate grammar
+│       └── textmate/                # TextMate bundle (grammar downloaded from djot-grammars)
 └── tests/                       # Grammar tests (JavaScript)
 ```
 
@@ -44,11 +44,16 @@ Thank you for your interest in contributing!
 
 ### TextMate Grammar
 
-The syntax highlighting is defined in `src/main/resources/textmate/djot.tmLanguage.json`.
+The syntax highlighting grammar is downloaded from [djot-grammars](https://github.com/php-collective/djot-grammars) during build. The grammar file (`src/main/resources/textmate/djot.tmLanguage.json`) is not checked into this repository.
 
-> **Note:** This grammar is shared with [djot-grammars](https://github.com/php-collective/djot-grammars), which provides the same TextMate grammar plus additional formats (highlight.js, Prism.js) for use with Shiki, Phiki, and other highlighters. When making changes, ensure both repositories stay in sync.
+**To update the grammar:** Make changes in the [djot-grammars](https://github.com/php-collective/djot-grammars) repository. The next build of this plugin will automatically fetch the updated grammar.
 
-For detailed documentation on how the grammar works, scope naming conventions, and how to add new syntax elements, see [docs/syntax-highlighting.md](docs/syntax-highlighting.md).
+**To manually refresh the grammar:**
+```bash
+./gradlew downloadGrammar
+```
+
+For detailed documentation on how the grammar works, see [docs/syntax-highlighting.md](docs/syntax-highlighting.md).
 
 ### Preview Panel
 

@@ -11,9 +11,9 @@ The plugin uses a **two-layer approach** for syntax highlighting:
 
 ## TextMate Grammar
 
-The grammar is defined in `src/main/resources/textmate/djot.tmLanguage.json` and follows the [TextMate Language Grammar](https://macromates.com/manual/en/language_grammars) specification.
+The grammar is downloaded from [djot-grammars](https://github.com/php-collective/djot-grammars) during build and placed at `src/main/resources/textmate/djot.tmLanguage.json`. It follows the [TextMate Language Grammar](https://macromates.com/manual/en/language_grammars) specification.
 
-> **Note:** This grammar is shared with [djot-grammars](https://github.com/php-collective/djot-grammars), which packages the same grammar for use with other tools (Shiki, Phiki, VS Code) along with highlight.js and Prism.js grammars.
+> **Note:** To modify the grammar, make changes in the [djot-grammars](https://github.com/php-collective/djot-grammars) repository. Run `./gradlew downloadGrammar` to fetch the latest version.
 
 ### How It Works
 
