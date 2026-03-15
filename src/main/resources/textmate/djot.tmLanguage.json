@@ -21,6 +21,7 @@
     { "include": "#reference-definition" },
     { "include": "#footnote-definition" },
     { "include": "#abbreviation-definition" },
+    { "include": "#caption" },
     { "include": "#block-attribute" },
     { "include": "#paragraph" }
   ],
@@ -75,7 +76,7 @@
     },
     "codeblock-raw": {
       "comment": "Raw code block with format specifier ``` =html",
-      "begin": "^(`{3,}) +=([a-zA-Z0-9_-]+)\\s*$",
+      "begin": "^(`{3,}) +(=)([a-zA-Z0-9_-]+)\\s*$",
       "end": "^(\\1)\\s*$",
       "beginCaptures": {
         "1": { "name": "string.other.begin.code.fence.djot" },
@@ -146,7 +147,8 @@
       "name": "markup.div.djot"
     },
     "line-block": {
-      "match": "^(\\|)\\s(.*)$",
+      "comment": "Line block for poetry - pipe followed by space, NOT containing another pipe (which would be table)",
+      "match": "^(\\|)\\s([^|]*)$",
       "captures": {
         "1": { "name": "keyword.operator.line-block.djot" },
         "2": {
@@ -158,12 +160,22 @@
     "definition-list": {
       "patterns": [
         {
-          "comment": "Definition term",
+          "comment": "Definition list term (line before : definition)",
+          "match": "^([^:\\s].*)$(?=\\n:\\s)",
+          "captures": {
+            "1": {
+              "name": "markup.bold.term.djot",
+              "patterns": [{ "include": "#inline" }]
+            }
+          }
+        },
+        {
+          "comment": "Definition list definition line",
           "match": "^(:)\\s+(.+)$",
           "captures": {
             "1": { "name": "keyword.operator.definition.djot" },
             "2": {
-              "name": "markup.bold.term.djot",
+              "name": "markup.definition.djot",
               "patterns": [{ "include": "#inline" }]
             }
           }
@@ -256,7 +268,7 @@
       ]
     },
     "reference-definition": {
-      "match": "^(\\[)([^\\]]+)(\\])(:)\\s*(.+)$",
+      "match": "^(\\[)(?!\\^)([^\\]]+)(\\])(:)\\s*(.+)$",
       "captures": {
         "1": { "name": "punctuation.definition.reference.begin.djot" },
         "2": { "name": "entity.name.reference.djot" },
@@ -275,17 +287,31 @@
       }
     },
     "abbreviation-definition": {
-      "match": "^(\\*\\[)([^\\]]+)(\\])(:)\\s*(.+)$",
-      "captures": {
+      "comment": "Abbreviation definition *[ABBR]: definition (can span multiple indented lines)",
+      "begin": "^(\\*\\[)([^\\]]+)(\\])(:)\\s*",
+      "end": "^(?!\\s)",
+      "beginCaptures": {
         "1": { "name": "punctuation.definition.abbreviation.begin.djot" },
         "2": { "name": "entity.name.abbreviation.djot" },
         "3": { "name": "punctuation.definition.abbreviation.end.djot" },
-        "4": { "name": "punctuation.separator.definition.djot" },
-        "5": { "name": "string.unquoted.abbreviation.definition.djot" }
+        "4": { "name": "punctuation.separator.definition.djot" }
+      },
+      "contentName": "string.unquoted.abbreviation.definition.djot"
+    },
+    "caption": {
+      "comment": "Caption for images, blockquotes, code blocks, etc.",
+      "match": "^(\\^)\\s+(.*)$",
+      "captures": {
+        "1": { "name": "punctuation.definition.caption.djot" },
+        "2": {
+          "name": "markup.italic.caption.djot",
+          "patterns": [{ "include": "#inline" }]
+        }
       }
     },
     "block-attribute": {
-      "match": "^(\\{)([^}]+)(\\})\\s*$",
+      "comment": "Block attributes like {.class} or {#id}. Excludes inline markers: {= {+ {- {^ {~ {%",
+      "match": "^(\\{)(?![=+\\-^~%])([^}]+)(\\})\\s*$",
       "captures": {
         "1": { "name": "punctuation.definition.attribute.begin.djot" },
         "2": {
@@ -373,8 +399,8 @@
       "name": "comment.inline.djot"
     },
     "raw-inline": {
-      "comment": "Raw inline with trailing format marker `content`{=html}",
-      "match": "(`+)([^`]+)(\\1)(\\{=)([a-zA-Z0-9_-]+)(\\})",
+      "comment": "Raw inline with trailing format marker `content`{=html}. Uses lazy match for nested backticks.",
+      "match": "(`+)(.+?)(\\1)(\\{=)([a-zA-Z0-9_-]+)(\\})",
       "captures": {
         "1": { "name": "string.other.begin.code.djot" },
         "2": { "name": "markup.raw.inline.djot" },
@@ -385,7 +411,8 @@
       }
     },
     "code-inline": {
-      "match": "(`+)([^`]+)(\\1)",
+      "comment": "Inline code with variable backtick count. Uses lazy match to allow nested backticks.",
+      "match": "(`+)(.+?)(\\1)",
       "captures": {
         "1": { "name": "string.other.begin.code.djot" },
         "2": { "name": "markup.raw.inline.code.djot" },
@@ -393,7 +420,8 @@
       }
     },
     "math-inline": {
-      "match": "(\\$`)([^`]+)(`)",
+      "comment": "Inline math $`...`$ - uses lazy match",
+      "match": "(\\$`)(.+?)(`\\$)",
       "captures": {
         "1": { "name": "punctuation.definition.math.begin.djot" },
         "2": { "name": "markup.math.inline.djot" },
@@ -409,25 +437,61 @@
       }
     },
     "image": {
-      "match": "(!)?(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
-      "captures": {
-        "1": { "name": "punctuation.definition.image.marker.djot" },
-        "2": { "name": "punctuation.definition.image.begin.djot" },
-        "3": {
-          "name": "string.other.image.alt.djot",
-          "patterns": [{ "include": "#inline" }]
+      "patterns": [
+        {
+          "comment": "Inline image ![alt](url)",
+          "match": "(!)(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
+          "captures": {
+            "1": { "name": "punctuation.definition.image.marker.djot" },
+            "2": { "name": "punctuation.definition.image.begin.djot" },
+            "3": {
+              "name": "string.other.image.alt.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "4": { "name": "punctuation.definition.image.end.djot" },
+            "5": { "name": "punctuation.definition.image.url.begin.djot" },
+            "6": { "name": "markup.underline.link.image.djot" },
+            "7": { "name": "punctuation.definition.image.url.end.djot" }
+          }
         },
-        "4": { "name": "punctuation.definition.image.end.djot" },
-        "5": { "name": "punctuation.definition.image.url.begin.djot" },
-        "6": { "name": "markup.underline.link.image.djot" },
-        "7": { "name": "punctuation.definition.image.url.end.djot" }
-      }
+        {
+          "comment": "Reference image ![alt][ref]",
+          "match": "(!)(\\[)([^\\]]*)(\\])(\\[)([^\\]]+)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.image.marker.djot" },
+            "2": { "name": "punctuation.definition.image.begin.djot" },
+            "3": {
+              "name": "string.other.image.alt.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "4": { "name": "punctuation.definition.image.end.djot" },
+            "5": { "name": "punctuation.definition.reference.begin.djot" },
+            "6": { "name": "entity.name.reference.djot" },
+            "7": { "name": "punctuation.definition.reference.end.djot" }
+          }
+        },
+        {
+          "comment": "Shortcut reference image ![alt][]",
+          "match": "(!)(\\[)([^\\]]+)(\\])(\\[)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.image.marker.djot" },
+            "2": { "name": "punctuation.definition.image.begin.djot" },
+            "3": {
+              "name": "string.other.image.alt.djot entity.name.reference.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "4": { "name": "punctuation.definition.image.end.djot" },
+            "5": { "name": "punctuation.definition.reference.begin.djot" },
+            "6": { "name": "punctuation.definition.reference.end.djot" }
+          }
+        }
+      ]
     },
     "link": {
       "patterns": [
         {
-          "comment": "Inline link [text](url)",
-          "match": "(\\[)([^\\]]+)(\\])(\\()([^)]*)(\\))",
+          "comment": "Inline link [text](url) - text can be empty",
+          "match": "(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
           "captures": {
             "1": { "name": "punctuation.definition.link.begin.djot" },
             "2": {
@@ -497,8 +561,9 @@
       }
     },
     "strong": {
-      "begin": "(\\*)",
-      "end": "(\\*)",
+      "comment": "Strong *text* - asterisk must be followed/preceded by non-space",
+      "begin": "(?<=[\\s\\p{P}]|^)(\\*)(?=\\S)",
+      "end": "(\\*)(?=[\\s\\p{P}]|$)",
       "beginCaptures": {
         "1": { "name": "punctuation.definition.bold.begin.djot" }
       },
@@ -511,8 +576,9 @@
       ]
     },
     "emphasis": {
-      "begin": "(_)",
-      "end": "(_)",
+      "comment": "Emphasis _text_ - underscore must be followed/preceded by non-space",
+      "begin": "(?<=[\\s\\p{P}]|^)(_)(?=\\S)",
+      "end": "(_)(?=[\\s\\p{P}]|$)",
       "beginCaptures": {
         "1": { "name": "punctuation.definition.italic.begin.djot" }
       },
