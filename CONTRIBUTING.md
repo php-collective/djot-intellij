@@ -23,18 +23,21 @@ Thank you for your interest in contributing!
 ## Project Structure
 
 ```
-src/main/
-├── kotlin/org/phpcollective/djot/
-│   ├── DjotLanguage.kt          # Language definition
-│   ├── DjotFileType.kt          # File type registration
-│   ├── DjotParserDefinition.kt  # Minimal parser
-│   ├── DjotTextMateBundleProvider.kt
-│   ├── actions/                 # Editor actions
-│   └── preview/                 # Preview panel
-└── resources/
-    ├── META-INF/plugin.xml      # Plugin configuration
-    ├── icons/                   # Plugin icons
-    └── textmate/                # TextMate grammar
+├── docs/                        # Documentation
+│   └── syntax-highlighting.md   # How syntax highlighting works
+├── src/main/
+│   ├── kotlin/org/phpcollective/djot/
+│   │   ├── DjotLanguage.kt          # Language definition
+│   │   ├── DjotFileType.kt          # File type registration
+│   │   ├── DjotParserDefinition.kt  # Minimal parser
+│   │   ├── DjotTextMateBundleProvider.kt
+│   │   ├── actions/                 # Editor actions
+│   │   └── preview/                 # Preview panel
+│   └── resources/
+│       ├── META-INF/plugin.xml      # Plugin configuration
+│       ├── icons/                   # Plugin icons
+│       └── textmate/                # TextMate grammar
+└── tests/                       # Grammar tests (JavaScript)
 ```
 
 ## Making Changes
@@ -42,19 +45,40 @@ src/main/
 ### TextMate Grammar
 
 The syntax highlighting is defined in `src/main/resources/textmate/djot.tmLanguage.json`.
-See the [TextMate Grammar Guide](https://macromates.com/manual/en/language_grammars) for documentation.
+
+For detailed documentation on how the grammar works, scope naming conventions, and how to add new syntax elements, see [docs/syntax-highlighting.md](docs/syntax-highlighting.md).
 
 ### Preview Panel
 
 The preview uses [djot.js](https://github.com/jgm/djot.js) loaded from CDN for rendering.
 The implementation is in `src/main/kotlin/org/phpcollective/djot/preview/DjotPreviewPanel.kt`.
 
+## Testing
+
+### Plugin Testing
+
+Build and run in a sandbox IDE:
+
+```bash
+./gradlew runIde
+```
+
+### Grammar Tests
+
+The `tests/` directory contains JavaScript tests for the TextMate grammar:
+
+```bash
+cd tests
+npm install
+npm test
+```
+
 ## Pull Requests
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test with `./gradlew runIde`
+4. Run `./gradlew runIde` and `npm test` (in tests/)
 5. Submit a pull request
 
 ## Code Style
