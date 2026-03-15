@@ -629,7 +629,7 @@
       "endCaptures": {
         "1": { "name": "punctuation.definition.bold.end.djot" }
       },
-      "name": "markup.bold.djot",
+      "name": "markup.bold.djot markup.heading",
       "patterns": [
         { "include": "#inline" }
       ]
@@ -644,7 +644,7 @@
       "endCaptures": {
         "1": { "name": "punctuation.definition.italic.end.djot" }
       },
-      "name": "markup.italic.djot",
+      "name": "markup.italic.djot string",
       "patterns": [
         { "include": "#inline" }
       ]
