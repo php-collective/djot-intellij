@@ -620,34 +620,22 @@
       }
     },
     "strong": {
-      "comment": "Strong *text* - asterisk must be followed/preceded by non-space",
-      "begin": "(?<=[\\s\\p{P}]|^)(\\*)(?=\\S)",
-      "end": "(\\*)(?=[\\s\\p{P}]|$)",
-      "beginCaptures": {
-        "1": { "name": "punctuation.definition.bold.begin.djot" }
-      },
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.bold.end.djot" }
-      },
-      "name": "markup.bold.djot markup.heading",
-      "patterns": [
-        { "include": "#inline" }
-      ]
+      "comment": "Strong *text*",
+      "match": "(\\*)(\\S.*?\\S|\\S)(\\*)",
+      "captures": {
+        "1": { "name": "punctuation.definition.bold.begin.djot" },
+        "2": { "name": "markup.bold.djot markup.heading" },
+        "3": { "name": "punctuation.definition.bold.end.djot" }
+      }
     },
     "emphasis": {
-      "comment": "Emphasis _text_ - underscore must be followed/preceded by non-space",
-      "begin": "(?<=[\\s\\p{P}]|^)(_)(?=\\S)",
-      "end": "(_)(?=[\\s\\p{P}]|$)",
-      "beginCaptures": {
-        "1": { "name": "punctuation.definition.italic.begin.djot" }
-      },
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.italic.end.djot" }
-      },
-      "name": "markup.italic.djot string",
-      "patterns": [
-        { "include": "#inline" }
-      ]
+      "comment": "Emphasis _text_",
+      "match": "(_)(\\S.*?\\S|\\S)(_)",
+      "captures": {
+        "1": { "name": "punctuation.definition.italic.begin.djot" },
+        "2": { "name": "markup.italic.djot string" },
+        "3": { "name": "punctuation.definition.italic.end.djot" }
+      }
     },
     "highlight": {
       "begin": "(\\{=)",
