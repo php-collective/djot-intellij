@@ -420,7 +420,8 @@
       }
     },
     "math-inline": {
-      "match": "(\\$`)([^`]+)(`)",
+      "comment": "Inline math $`...`$ - uses lazy match",
+      "match": "(\\$`)(.+?)(`\\$)",
       "captures": {
         "1": { "name": "punctuation.definition.math.begin.djot" },
         "2": { "name": "markup.math.inline.djot" },
@@ -436,26 +437,61 @@
       }
     },
     "image": {
-      "comment": "Image ![alt](url) - requires ! to distinguish from links",
-      "match": "(!)(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
-      "captures": {
-        "1": { "name": "punctuation.definition.image.marker.djot" },
-        "2": { "name": "punctuation.definition.image.begin.djot" },
-        "3": {
-          "name": "string.other.image.alt.djot",
-          "patterns": [{ "include": "#inline" }]
+      "patterns": [
+        {
+          "comment": "Inline image ![alt](url)",
+          "match": "(!)(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
+          "captures": {
+            "1": { "name": "punctuation.definition.image.marker.djot" },
+            "2": { "name": "punctuation.definition.image.begin.djot" },
+            "3": {
+              "name": "string.other.image.alt.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "4": { "name": "punctuation.definition.image.end.djot" },
+            "5": { "name": "punctuation.definition.image.url.begin.djot" },
+            "6": { "name": "markup.underline.link.image.djot" },
+            "7": { "name": "punctuation.definition.image.url.end.djot" }
+          }
         },
-        "4": { "name": "punctuation.definition.image.end.djot" },
-        "5": { "name": "punctuation.definition.image.url.begin.djot" },
-        "6": { "name": "markup.underline.link.image.djot" },
-        "7": { "name": "punctuation.definition.image.url.end.djot" }
-      }
+        {
+          "comment": "Reference image ![alt][ref]",
+          "match": "(!)(\\[)([^\\]]*)(\\])(\\[)([^\\]]+)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.image.marker.djot" },
+            "2": { "name": "punctuation.definition.image.begin.djot" },
+            "3": {
+              "name": "string.other.image.alt.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "4": { "name": "punctuation.definition.image.end.djot" },
+            "5": { "name": "punctuation.definition.reference.begin.djot" },
+            "6": { "name": "entity.name.reference.djot" },
+            "7": { "name": "punctuation.definition.reference.end.djot" }
+          }
+        },
+        {
+          "comment": "Shortcut reference image ![alt][]",
+          "match": "(!)(\\[)([^\\]]+)(\\])(\\[)(\\])",
+          "captures": {
+            "1": { "name": "punctuation.definition.image.marker.djot" },
+            "2": { "name": "punctuation.definition.image.begin.djot" },
+            "3": {
+              "name": "string.other.image.alt.djot entity.name.reference.djot",
+              "patterns": [{ "include": "#inline" }]
+            },
+            "4": { "name": "punctuation.definition.image.end.djot" },
+            "5": { "name": "punctuation.definition.reference.begin.djot" },
+            "6": { "name": "punctuation.definition.reference.end.djot" }
+          }
+        }
+      ]
     },
     "link": {
       "patterns": [
         {
-          "comment": "Inline link [text](url)",
-          "match": "(\\[)([^\\]]+)(\\])(\\()([^)]*)(\\))",
+          "comment": "Inline link [text](url) - text can be empty",
+          "match": "(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
           "captures": {
             "1": { "name": "punctuation.definition.link.begin.djot" },
             "2": {

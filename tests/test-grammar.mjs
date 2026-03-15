@@ -574,6 +574,7 @@ const testCases = [
     expects: [
       { token: '$`', scope: 'punctuation.definition.math.begin.djot' },
       { token: 'E=mc^2', scope: 'markup.math.inline.djot' },
+      { token: '`$', scope: 'punctuation.definition.math.end.djot' },
     ]
   },
   {
@@ -692,6 +693,55 @@ const testCases = [
     expects: [
       { token: 'one', scope: 'markup.bold.djot' },
       { token: 'two', scope: 'markup.bold.djot' },
+    ]
+  },
+  {
+    name: 'Empty link text',
+    input: '[](https://example.com)',
+    expects: [
+      { token: '[', scope: 'punctuation.definition.link.begin.djot' },
+      { token: ']', scope: 'punctuation.definition.link.end.djot' },
+      { token: 'https://example.com', scope: 'markup.underline.link.djot' },
+    ]
+  },
+  {
+    name: 'Reference image',
+    input: '![alt][ref]',
+    expects: [
+      { token: '!', scope: 'punctuation.definition.image.marker.djot' },
+      { token: 'alt', scope: 'string.other.image.alt.djot' },
+      { token: 'ref', scope: 'entity.name.reference.djot' },
+    ]
+  },
+  {
+    name: 'Shortcut reference image',
+    input: '![logo][]',
+    expects: [
+      { token: '!', scope: 'punctuation.definition.image.marker.djot' },
+      { token: 'logo', scope: 'string.other.image.alt.djot' },
+    ]
+  },
+  {
+    name: 'Nested bold and italic',
+    input: '*_bold italic_*',
+    expects: [
+      { token: '*', scope: 'punctuation.definition.bold.begin.djot' },
+      { token: '_', scope: 'punctuation.definition.italic.begin.djot' },
+      { token: 'bold italic', scope: 'markup.italic.djot' },
+    ]
+  },
+  {
+    name: 'Emphasis not in middle of word',
+    input: 'un*frigging*believable',
+    expects: [
+      { token: 'un*frigging*believable', scope: 'text.djot' },
+    ]
+  },
+  {
+    name: 'Underscore not in middle of word',
+    input: 'some_var_name',
+    expects: [
+      { token: 'some_var_name', scope: 'text.djot' },
     ]
   },
 ];
