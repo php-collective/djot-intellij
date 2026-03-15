@@ -13,6 +13,8 @@ The plugin uses a **two-layer approach** for syntax highlighting:
 
 The grammar is defined in `src/main/resources/textmate/djot.tmLanguage.json` and follows the [TextMate Language Grammar](https://macromates.com/manual/en/language_grammars) specification.
 
+> **Note:** This grammar is shared with [djot-grammars](https://github.com/php-collective/djot-grammars), which packages the same grammar for use with other tools (Shiki, Phiki, VS Code) along with highlight.js and Prism.js grammars.
+
 ### How It Works
 
 IntelliJ IDEs have built-in TextMate support. The plugin registers a TextMate bundle via:
@@ -255,3 +257,4 @@ The preview implementation is in `src/main/kotlin/org/phpcollective/djot/preview
 - [VS Code Syntax Highlighting Guide](https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide)
 - [Djot Syntax Reference](https://djot.net/syntax/)
 - [highlight.js](https://highlightjs.org/)
+- [djot-grammars](https://github.com/php-collective/djot-grammars) - Shared grammar repository

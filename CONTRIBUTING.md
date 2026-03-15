@@ -46,6 +46,8 @@ Thank you for your interest in contributing!
 
 The syntax highlighting is defined in `src/main/resources/textmate/djot.tmLanguage.json`.
 
+> **Note:** This grammar is shared with [djot-grammars](https://github.com/php-collective/djot-grammars), which provides the same TextMate grammar plus additional formats (highlight.js, Prism.js) for use with Shiki, Phiki, and other highlighters. When making changes, ensure both repositories stay in sync.
+
 For detailed documentation on how the grammar works, scope naming conventions, and how to add new syntax elements, see [docs/syntax-highlighting.md](docs/syntax-highlighting.md).
 
 ### Preview Panel
