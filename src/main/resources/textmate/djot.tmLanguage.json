@@ -147,7 +147,8 @@
       "name": "markup.div.djot"
     },
     "line-block": {
-      "match": "^(\\|)\\s(.*)$",
+      "comment": "Line block for poetry - pipe followed by space, NOT containing another pipe (which would be table)",
+      "match": "^(\\|)\\s([^|]*)$",
       "captures": {
         "1": { "name": "keyword.operator.line-block.djot" },
         "2": {
@@ -433,7 +434,8 @@
       }
     },
     "image": {
-      "match": "(!)?(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
+      "comment": "Image ![alt](url) - requires ! to distinguish from links",
+      "match": "(!)(\\[)([^\\]]*)(\\])(\\()([^)]*)(\\))",
       "captures": {
         "1": { "name": "punctuation.definition.image.marker.djot" },
         "2": { "name": "punctuation.definition.image.begin.djot" },
