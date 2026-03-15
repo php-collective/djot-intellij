@@ -109,6 +109,7 @@ Uses [php-collective/djot](https://github.com/php-collective/djot) for rendering
 - [Djot specification](https://htmlpreview.github.io/?https://github.com/jgm/djot/blob/master/doc/syntax.html)
 - [djot.net](https://djot.net) - Official site
 - [djot-php](https://github.com/php-collective/djot-php) - PHP implementation
+- [djot-grammars](https://github.com/php-collective/djot-grammars) - Djot syntax grammars (TextMate, highlight.js, Prism.js)
 
 ## Development
 

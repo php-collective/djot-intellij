@@ -6,3 +6,6 @@ out/
 .kotlin/
 gradle.properties
 .intellijPlatform
+
+# Downloaded from djot-grammars during build
+src/main/resources/textmate/djot.tmLanguage.json

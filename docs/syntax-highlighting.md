@@ -11,7 +11,9 @@ The plugin uses a **two-layer approach** for syntax highlighting:
 
 ## TextMate Grammar
 
-The grammar is defined in `src/main/resources/textmate/djot.tmLanguage.json` and follows the [TextMate Language Grammar](https://macromates.com/manual/en/language_grammars) specification.
+The grammar is downloaded from [djot-grammars](https://github.com/php-collective/djot-grammars) during build and placed at `src/main/resources/textmate/djot.tmLanguage.json`. It follows the [TextMate Language Grammar](https://macromates.com/manual/en/language_grammars) specification.
+
+> **Note:** To modify the grammar, make changes in the [djot-grammars](https://github.com/php-collective/djot-grammars) repository. Run `./gradlew downloadGrammar` to fetch the latest version.
 
 ### How It Works
 
@@ -255,3 +257,4 @@ The preview implementation is in `src/main/kotlin/org/phpcollective/djot/preview
 - [VS Code Syntax Highlighting Guide](https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide)
 - [Djot Syntax Reference](https://djot.net/syntax/)
 - [highlight.js](https://highlightjs.org/)
+- [djot-grammars](https://github.com/php-collective/djot-grammars) - Shared grammar repository

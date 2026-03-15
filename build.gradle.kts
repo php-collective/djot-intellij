@@ -26,7 +26,31 @@ kotlin {
     jvmToolchain(17)
 }
 
+val textmateDir = "src/main/resources/textmate"
+val grammarUrl = "https://raw.githubusercontent.com/php-collective/djot-grammars/master/textmate/djot.tmLanguage.json"
+
 tasks {
+    val downloadGrammar by registering {
+        description = "Downloads the TextMate grammar from djot-grammars"
+        group = "build"
+
+        val outputFile = file("$textmateDir/djot.tmLanguage.json")
+        outputs.file(outputFile)
+
+        doLast {
+            uri(grammarUrl).toURL().openStream().use { input ->
+                outputFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+            println("Downloaded grammar to $outputFile")
+        }
+    }
+
+    processResources {
+        dependsOn(downloadGrammar)
+    }
+
     patchPluginXml {
         sinceBuild.set("241")
     }
