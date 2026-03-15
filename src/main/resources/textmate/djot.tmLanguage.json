@@ -361,8 +361,15 @@
       "name": "constant.character.escape.djot"
     },
     "comment-inline": {
-      "comment": "Inline comment {% ... %}",
-      "match": "\\{%[^%]*%\\}",
+      "comment": "Inline/multi-line comment {% ... %} - can span lines and allows % inside",
+      "begin": "(\\{%)",
+      "end": "(%\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.comment.begin.djot" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.comment.end.djot" }
+      },
       "name": "comment.inline.djot"
     },
     "raw-inline": {
