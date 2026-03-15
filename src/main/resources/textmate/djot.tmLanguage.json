@@ -75,13 +75,14 @@
       ]
     },
     "codeblock-raw": {
-      "comment": "Raw code block with format specifier ``` =html",
-      "begin": "^(`{3,}) +(=)([a-zA-Z0-9_-]+)\\s*$",
-      "end": "^(\\1)\\s*$",
+      "comment": "Raw code block with format specifier ``` =html {.class}",
+      "begin": "^(`{3,}) +(=)([a-zA-Z0-9_-]+)(\\s*\\{[^}]*\\})?\\s*$",
+      "end": "^(`{3,})\\s*$",
       "beginCaptures": {
         "1": { "name": "string.other.begin.code.fence.djot" },
         "2": { "name": "keyword.operator.raw.djot" },
-        "3": { "name": "entity.name.type.format.djot" }
+        "3": { "name": "entity.name.type.format.djot" },
+        "4": { "name": "entity.other.attribute.djot" }
       },
       "endCaptures": {
         "1": { "name": "string.other.end.code.fence.djot" }
@@ -89,12 +90,13 @@
       "contentName": "markup.raw.block.djot"
     },
     "codeblock": {
-      "begin": "^(`{3,})([a-zA-Z0-9_+-]*)?(\\s*\\{[^}]*\\})?\\s*$",
-      "end": "^(\\1)\\s*$",
+      "comment": "Fenced code block - allows optional indentation",
+      "begin": "^(\\s*)(`{3,})([a-zA-Z0-9_+-]*)?(\\s*\\{[^}]*\\})?\\s*$",
+      "end": "^\\s*(`{3,})\\s*$",
       "beginCaptures": {
-        "1": { "name": "string.other.begin.code.fence.djot" },
-        "2": { "name": "entity.name.function.language.djot" },
-        "3": { "name": "entity.other.attribute.djot" }
+        "2": { "name": "string.other.begin.code.fence.djot" },
+        "3": { "name": "entity.name.function.language.djot" },
+        "4": { "name": "entity.other.attribute.djot" }
       },
       "endCaptures": {
         "1": { "name": "string.other.end.code.fence.djot" }
@@ -109,15 +111,34 @@
       "name": "markup.raw.code.djot"
     },
     "math-display": {
-      "begin": "^(\\$\\$)(`?)\\s*$",
-      "end": "^(\\1)\\s*$",
-      "beginCaptures": {
-        "1": { "name": "keyword.control.math.begin.djot" }
-      },
-      "endCaptures": {
-        "1": { "name": "keyword.control.math.end.djot" }
-      },
-      "contentName": "markup.math.display.djot"
+      "patterns": [
+        {
+          "comment": "Display math with backticks $$` ... `$$",
+          "begin": "^(\\$\\$)(`)\\s*$",
+          "end": "^(`)(\\$\\$)\\s*$",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.math.begin.djot" },
+            "2": { "name": "punctuation.definition.math.backtick.djot" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.math.backtick.djot" },
+            "2": { "name": "keyword.control.math.end.djot" }
+          },
+          "contentName": "markup.math.display.djot"
+        },
+        {
+          "comment": "Display math without backticks $$ ... $$",
+          "begin": "^(\\$\\$)\\s*$",
+          "end": "^(\\$\\$)\\s*$",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.math.begin.djot" }
+          },
+          "endCaptures": {
+            "1": { "name": "keyword.control.math.end.djot" }
+          },
+          "contentName": "markup.math.display.djot"
+        }
+      ]
     },
     "blockquote": {
       "begin": "^(>)\\s?",
@@ -131,8 +152,9 @@
       "name": "markup.quote.djot"
     },
     "div": {
-      "begin": "^(:::+)\\s*(\\w[\\w-]*)?(\\s*\\{[^}]*\\})?\\s*$",
-      "end": "^(\\1)\\s*$",
+      "comment": "Div block ::: ... ::: - Uses div-content instead of $self to prevent nested div from matching end",
+      "begin": "^(:{3,})\\s*(\\w[\\w-]*)?(\\s*\\{[^}]*\\})?\\s*$",
+      "end": "^(:{3,})\\s*$",
       "beginCaptures": {
         "1": { "name": "keyword.control.div.begin.djot" },
         "2": { "name": "entity.name.tag.div.djot" },
@@ -141,10 +163,41 @@
       "endCaptures": {
         "1": { "name": "keyword.control.div.end.djot" }
       },
+      "contentName": "markup.div.djot",
       "patterns": [
-        { "include": "$self" }
-      ],
-      "name": "markup.div.djot"
+        { "include": "#div-content" }
+      ]
+    },
+    "div-content": {
+      "comment": "Content patterns inside div - excludes div and uses div-paragraph instead of paragraph",
+      "patterns": [
+        { "include": "#comment-block" },
+        { "include": "#comment-fenced" },
+        { "include": "#heading" },
+        { "include": "#codeblock-raw" },
+        { "include": "#codeblock" },
+        { "include": "#math-display" },
+        { "include": "#blockquote" },
+        { "include": "#line-block" },
+        { "include": "#definition-list" },
+        { "include": "#list" },
+        { "include": "#thematic-break" },
+        { "include": "#table" },
+        { "include": "#reference-definition" },
+        { "include": "#footnote-definition" },
+        { "include": "#abbreviation-definition" },
+        { "include": "#caption" },
+        { "include": "#block-attribute" },
+        { "include": "#div-paragraph" }
+      ]
+    },
+    "div-paragraph": {
+      "comment": "Paragraph inside div - ends at blank line, fenced comment, OR div closing marker",
+      "begin": "^(?=\\S)",
+      "end": "^\\s*$|^(?=%{3,}\\s*$)|^(?=:{3,}\\s*$)",
+      "patterns": [
+        { "include": "#inline" }
+      ]
     },
     "line-block": {
       "comment": "Line block for poetry - pipe followed by space, NOT containing another pipe (which would be table)",
@@ -186,25 +239,28 @@
       "patterns": [
         {
           "comment": "Task list item - checked",
-          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[xX]\\])\\s*",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[xX]\\])\\s+(.*)$",
           "captures": {
             "2": { "name": "keyword.operator.list.marker.djot" },
-            "3": { "name": "markup.inserted.checkbox.checked.djot" }
+            "3": { "name": "markup.inserted.checkbox.checked.djot" },
+            "4": { "patterns": [{ "include": "#inline" }] }
           }
         },
         {
           "comment": "Task list item - unchecked",
-          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[ _]\\])\\s*",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(\\[[ _]\\])\\s+(.*)$",
           "captures": {
             "2": { "name": "keyword.operator.list.marker.djot" },
-            "3": { "name": "markup.deleted.checkbox.unchecked.djot" }
+            "3": { "name": "markup.deleted.checkbox.unchecked.djot" },
+            "4": { "patterns": [{ "include": "#inline" }] }
           }
         },
         {
           "comment": "Unordered/ordered list item",
-          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+",
+          "match": "^(\\s*)(-|\\*|\\+|\\d+\\.|\\d+\\))\\s+(.*)$",
           "captures": {
-            "2": { "name": "keyword.operator.list.marker.djot" }
+            "2": { "name": "keyword.operator.list.marker.djot" },
+            "3": { "patterns": [{ "include": "#inline" }] }
           }
         }
       ]
@@ -278,12 +334,14 @@
       }
     },
     "footnote-definition": {
-      "match": "^(\\[\\^)([^\\]]+)(\\])(:)",
+      "comment": "Footnote definition [^id]: content - captures inline content on same line",
+      "match": "^(\\[\\^)([^\\]]+)(\\])(:)\\s*(.*)$",
       "captures": {
         "1": { "name": "punctuation.definition.footnote.begin.djot" },
         "2": { "name": "entity.name.footnote.djot constant.other.footnote.djot" },
         "3": { "name": "punctuation.definition.footnote.end.djot" },
-        "4": { "name": "punctuation.separator.definition.djot" }
+        "4": { "name": "punctuation.separator.definition.djot" },
+        "5": { "patterns": [{ "include": "#inline" }] }
       }
     },
     "abbreviation-definition": {
@@ -725,13 +783,13 @@
           "name": "punctuation.definition.quote.end.djot"
         },
         {
-          "comment": "Left single quote / apostrophe",
-          "match": "'(?=\\S)",
+          "comment": "Left single quote - only at word boundary (not mid-word apostrophe)",
+          "match": "(?<=[\\s\\p{P}]|^)'(?=\\S)",
           "name": "punctuation.definition.quote.single.begin.djot"
         },
         {
-          "comment": "Right single quote / apostrophe",
-          "match": "(?<=\\S)'",
+          "comment": "Right single quote - at end of word followed by space/punctuation",
+          "match": "(?<=\\S)'(?=[\\s\\p{P}]|$)",
           "name": "punctuation.definition.quote.single.end.djot"
         }
       ]
