@@ -55,7 +55,7 @@ class DjotSettingsConfigurable(private val project: Project) : BoundConfigurable
                         FileChooserDescriptorFactory.createSingleFileDescriptor("php")
                     ).columns(COLUMNS_LARGE)
                         .bindText(settings::phpDjotScript)
-                        .comment("Custom PHP script that reads stdin and outputs HTML. Leave empty to use the package's bin/djot CLI, with a built-in inline converter as fallback.")
+                        .comment("Custom PHP script that reads stdin and outputs HTML. Leave empty to use the package's vendor/bin/djot CLI, with a built-in inline converter as fallback.")
                 }
             }
         }

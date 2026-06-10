@@ -110,4 +110,48 @@ class PhpDjotConverterTest {
 
         assertTrue("Should fail with invalid working dir", result.isFailure)
     }
+
+    @Test
+    fun testFallbackToInlineWhenCliFails() {
+        // Build a project where vendor/bin/djot exists but exits non-zero (e.g. a
+        // PHP build without ext-posix), while the autoload is wired up so the
+        // inline converter still works. The CLI is preferred, fails, and the
+        // converter must fall back to the inline script instead of erroring.
+        val project = File.createTempFile("djot-fallback", "").let {
+            it.delete(); it.mkdirs(); it
+        }
+        val bin = File(project, "vendor/bin").apply { mkdirs() }
+        val stub = File(bin, "djot")
+        stub.writeText("#!/usr/bin/env php\n<?php\nfwrite(STDERR, \"boom\\n\");\nexit(255);\n")
+        stub.setExecutable(true)
+        java.nio.file.Files.createSymbolicLink(
+            File(project, "vendor/autoload.php").toPath(),
+            File("$testDir/vendor/autoload.php").toPath(),
+        )
+
+        try {
+            val result = PhpDjotConverter.toHtml(
+                djot = "# Hi\n\n*bold*",
+                workingDir = project.absolutePath,
+            )
+
+            assertTrue("Should succeed via inline fallback", result.isSuccess)
+            assertTrue("Should contain strong", result.getOrThrow().contains("<strong>bold</strong>"))
+        } finally {
+            project.deleteRecursively()
+        }
+    }
+
+    @Test
+    fun testMisconfiguredScriptFailsInsteadOfFallingBack() {
+        // A non-empty but invalid custom script path is an explicit misconfiguration
+        // and must surface as an error, not silently fall back to another converter.
+        val result = PhpDjotConverter.toHtml(
+            djot = "# Test",
+            scriptPath = "/nonexistent/converter.php",
+            workingDir = testDir,
+        )
+
+        assertTrue("Should fail on invalid custom script", result.isFailure)
+    }
 }

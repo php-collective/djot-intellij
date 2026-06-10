@@ -25,8 +25,14 @@ object PhpDjotConverter {
     ): Result<String> {
         val effectivePhpPath = phpPath.ifBlank { "php" }
 
-        if (workingDir != null && !File(workingDir).exists()) {
-            return Result.failure(Exception("Working directory does not exist: $workingDir"))
+        if (workingDir != null && !File(workingDir).isDirectory) {
+            return Result.failure(Exception("Working directory does not exist or is not a directory: $workingDir"))
+        }
+
+        // An explicitly configured converter script must be a usable file: surface
+        // the misconfiguration rather than silently falling back to a different converter.
+        if (scriptPath.isNotBlank() && !File(scriptPath).isFile) {
+            return Result.failure(Exception("Configured converter script does not exist or is not a file: $scriptPath"))
         }
 
         // Ordered list of converter commands. The first one that succeeds wins;
@@ -41,7 +47,6 @@ object PhpDjotConverter {
                 return result
             }
             lastFailure = result
-            LOG.info("PHP Djot: command failed, trying next fallback (if any)")
         }
         return lastFailure
     }
@@ -51,23 +56,23 @@ object PhpDjotConverter {
      *
      * 1. A user-provided custom converter script, when configured. Used exclusively
      *    so an explicit override is never silently bypassed.
-     * 2. Otherwise the bin/djot CLI shipped by php-collective/djot (reads Djot from
-     *    stdin, writes HTML to stdout), with the inline script as a fallback for
-     *    older versions without the CLI or PHP builds where the CLI cannot run
-     *    (e.g. missing ext-posix).
+     * 2. Otherwise the `vendor/bin/djot` CLI shipped by php-collective/djot (reads
+     *    Djot from stdin, writes HTML to stdout), with the inline script as a
+     *    fallback for older versions without the CLI or PHP builds where the CLI
+     *    cannot run (e.g. missing ext-posix).
      */
     private fun buildCommands(
         phpPath: String,
         scriptPath: String,
         workingDir: String?,
     ): List<List<String>> {
-        if (scriptPath.isNotBlank() && File(scriptPath).exists()) {
+        if (scriptPath.isNotBlank() && File(scriptPath).isFile) {
             return listOf(listOf(phpPath, scriptPath))
         }
 
         val commands = mutableListOf<List<String>>()
         val cliBinary = workingDir?.let { File(it, "vendor/bin/djot") }
-        if (cliBinary != null && cliBinary.exists()) {
+        if (cliBinary != null && cliBinary.isFile) {
             commands += listOf(phpPath, cliBinary.absolutePath)
         }
         commands += listOf(phpPath, "-r", inlineScript)
@@ -79,8 +84,14 @@ object PhpDjotConverter {
         djot: String,
         workingDir: String?,
     ): Result<String> {
+        // Label the command for logs without dumping the multi-line inline script.
+        val label = when {
+            command.contains("-r") -> "inline script"
+            command.size >= 2 -> command[1]
+            else -> command.joinToString(" ")
+        }
         return try {
-            LOG.info("PHP Djot: Running command in $workingDir")
+            LOG.info("PHP Djot: running [$label] in $workingDir")
 
             val processBuilder = ProcessBuilder(command)
                 .redirectErrorStream(false)
@@ -91,6 +102,15 @@ object PhpDjotConverter {
 
             val process = processBuilder.start()
 
+            // Drain stdout/stderr on separate threads so a large document cannot
+            // fill the OS pipe buffer and deadlock the process before waitFor().
+            val stdout = StringBuilder()
+            val stderr = StringBuilder()
+            val outThread = Thread { process.inputStream.bufferedReader().use { stdout.append(it.readText()) } }
+            val errThread = Thread { process.errorStream.bufferedReader().use { stderr.append(it.readText()) } }
+            outThread.start()
+            errThread.start()
+
             process.outputStream.bufferedWriter().use { writer ->
                 writer.write(djot)
             }
@@ -98,21 +118,24 @@ object PhpDjotConverter {
             val completed = process.waitFor(10, TimeUnit.SECONDS)
             if (!completed) {
                 process.destroyForcibly()
+                outThread.join(1000)
+                errThread.join(1000)
                 return Result.failure(Exception("PHP process timed out"))
             }
+            outThread.join()
+            errThread.join()
 
             val exitCode = process.exitValue()
             if (exitCode != 0) {
-                val error = process.errorStream.bufferedReader().readText()
-                LOG.warn("PHP Djot failed: $error")
-                return Result.failure(Exception("PHP exited with code $exitCode: $error"))
+                LOG.warn("PHP Djot [$label] failed: $stderr")
+                return Result.failure(Exception("PHP exited with code $exitCode: $stderr"))
             }
 
-            val html = process.inputStream.bufferedReader().readText()
-            LOG.info("PHP Djot: Successfully converted ${djot.length} chars to ${html.length} chars")
+            val html = stdout.toString()
+            LOG.info("PHP Djot [$label]: converted ${djot.length} chars to ${html.length} chars")
             Result.success(html)
         } catch (e: Exception) {
-            LOG.warn("PHP Djot exception", e)
+            LOG.warn("PHP Djot [$label] exception", e)
             Result.failure(e)
         }
     }
