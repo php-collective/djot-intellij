@@ -2,6 +2,8 @@
 
 [![JetBrains Marketplace](https://img.shields.io/jetbrains/plugin/v/29244-djot.svg)](https://plugins.jetbrains.com/plugin/29244-djot)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/29244-djot.svg)](https://plugins.jetbrains.com/plugin/29244-djot)
+[![Tests](https://img.shields.io/github/actions/workflow/status/php-collective/djot-intellij/test-grammar.yml?branch=main&label=tests)](https://github.com/php-collective/djot-intellij/actions/workflows/test-grammar.yml)
+[![License](https://img.shields.io/github/license/php-collective/djot-intellij.svg)](LICENSE)
 
 Djot markup language support for JetBrains IDEs (PhpStorm, IntelliJ IDEA, WebStorm, etc.).
 
