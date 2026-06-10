@@ -94,6 +94,7 @@ Uses [php-collective/djot](https://github.com/php-collective/djot) for rendering
   composer require php-collective/djot
   ```
 - Useful for consistency with PHP-based projects
+- Uses the package's `vendor/bin/djot` CLI when present, falling back to a built-in inline converter for older versions
 - Supports custom converter scripts
 
 ## About Djot
